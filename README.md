@@ -1,116 +1,144 @@
 # Hi, I'm Franz 👋
 
-Revenue Systems Architect based in South Africa 🇿🇦  
-CSO @ SIG Solutions  
+📍 Pretoria, South Africa  
+🔥 Revenue Infrastructure Operator  
+⚙️ Lead Engines • Dialer Systems • AI Workflows  
+🏢 CSO @ SIG Solutions  
+
+---
+
+## ⚡ Stack
+
+![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql&logoColor=white)
+![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?logo=supabase&logoColor=white)
+![Playwright](https://img.shields.io/badge/-Playwright-2EAD33?logo=playwright&logoColor=white)
+![Meta Ads](https://img.shields.io/badge/-Meta%20Ads-1877F2?logo=meta&logoColor=white)
+![ViciDial](https://img.shields.io/badge/-ViciDial-222222?logo=asterisk&logoColor=white)
+![n8n](https://img.shields.io/badge/-n8n-EA4B71?logo=n8n&logoColor=white)
+![Make](https://img.shields.io/badge/-Make-6C63FF?logo=make&logoColor=white)
+![Claude](https://img.shields.io/badge/-Claude-000000?logo=anthropic&logoColor=white)
+
+---
 
 I don’t build apps.  
-I build revenue infrastructure.
+I build **revenue infrastructure.**
+
+High-volume acquisition systems for:
+
+• Insurance  
+• Legal liability  
+• Subscription fundraising  
+• Advocacy campaigns  
+• Petition-to-donor pipelines  
+
+Everything engineered around:
+
+**Conversion × Data Control × Operational Leverage**
 
 ---
 
-## 🧠 What I Do
+# 🚀 Current Builds
 
-I design and deploy high-volume lead generation systems for:
-
-- Insurance
-- Legal liability cover
-- Subscription fundraising
-- Advocacy campaigns
-- Petition-to-donor pipelines
-
-Everything I build is engineered around one thing:
-
-**Conversion + Data Control + Operational Leverage**
-
----
-
-## ⚙️ Core Systems I Build
-
-### 🔥 Lead Generation Infrastructure
-- Meta Ads → Conversion-optimized funnels
-- Conversion API (CAPI) implementations
-- Facebook Instant Forms pipelines
-- Petition-driven audience building
-- Viral audience acquisition loops
-
-### 📊 Data & Warehouse Architecture
-- Supabase / PostgreSQL data warehouses
-- Contact normalization engines
-- South African phone validation systems
-- Deduplication logic
-- Upload reconciliation pipelines
-
-### ☎️ Dialer Infrastructure
-- ViciDial campaign structuring
-- Dialer-safe CSV export engines
-- Campaign-level reconciliation dashboards
-- Batch-level performance monitoring
-- Duplicate detection and prevention logic
-
-### 🤖 Automation & AI Systems
-- Make.com & N8N workflow orchestration
-- Agent-assisted operational tooling
-- Playwright automation systems
-- AI-based data enrichment workflows
-- Campaign QA automation
-
----
-
-## 🏗 Current Projects
-
-### 🛡 Firearms Guardian
+🛡 **Firearms Guardian**  
 Legal liability & insurance acquisition engine targeting firearm owners in South Africa.
 
-### 🌐 LeadLabs
-Conversion-first infrastructure for scalable lead generation and funnel optimization.
+🌐 **LeadLabs**  
+Conversion-first growth stack for scalable lead generation & automation.
 
-### 📡 VeldNET
-Real-time security alert system designed around geographic proximity triggers.
+📡 **VeldNET**  
+Geo-triggered real-time security alert infrastructure.
 
-### 🗳 Voice of Change
-Petition platform engineered to convert civic intent into sustainable fundraising.
+🗳 **Voice of Change**  
+Petition → Fundraising conversion machine.
 
----
+☎️ **DialRite**  
+ViciDial-safe export engine with reconciliation & duplicate suppression logic.
 
-## 🧰 Stack
-
-- TypeScript
-- PostgreSQL
-- Supabase
-- Playwright
-- Meta Ads + CAPI
-- ViciDial
-- Make.com
-- N8N
-- Claude / GPT workflows
+🧠 **SA Phone Engine**  
+Strict South African telecom normalization & validation framework.
 
 ---
 
-## 🎯 Philosophy
+# ⚙️ Systems I Ship
 
-Most businesses rent their growth.
+## 🔥 Lead Acquisition Engines
 
-I build systems that **own the pipeline**.
-
-- Own the data.
-- Own the dialer.
-- Own the conversion logic.
-- Own the margin.
-
----
-
-## 📍 Location
-
-Pretoria, South Africa  
-
-Building high-leverage systems for real-world operations.
+• Meta Ads scaling systems  
+• Instant Form → CRM pipelines  
+• Conversion API integrations  
+• Viral petition funnels  
+• Audience compounding loops  
+• Cost-per-sale optimization frameworks  
 
 ---
 
-## 📫 Connect
+## 📊 Data Infrastructure
 
-Website: https://sigsolutions.co.za  
-Email: franz@sigsolutions.co.za  
+• Supabase / PostgreSQL warehouses  
+• Batch upload validation engines  
+• Deduplication frameworks  
+• SA phone normalization logic  
+• List-level performance tracking  
+• Campaign reconciliation layers  
+
+---
+
+## ☎️ Dialer Infrastructure
+
+• ViciDial campaign architecture  
+• Dialer-safe CSV export systems  
+• Duplicate suppression engines  
+• Revenue-per-list analytics  
+• Contact lifecycle monitoring  
+• Data integrity enforcement  
+
+---
+
+## 🤖 Automation & AI Workflows
+
+• N8N orchestration layers  
+• Make automation systems  
+• Playwright automation stacks  
+• AI-assisted QA tooling  
+• Workflow-triggered reporting  
+• Agent-enhanced operational control  
+
+---
+
+# 📈 GitHub Activity
+
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=bully911210&show_icons=true&theme=dark&hide_border=true)
+![GitHub Streak](https://streak-stats.demolab.com?user=bully911210&theme=dark&hide_border=true)
+
+---
+
+# 🎯 Focus
+
+Infrastructure > aesthetics  
+Control > dependency  
+Ownership > outsourcing  
+Systems > hacks  
+
+Most businesses rent their growth.  
+I internalize it.
+
+---
+
+# 🧠 What Drives Me
+
+• First principles thinking  
+• High-leverage system design  
+• South African market specialization  
+• Converting attention into revenue  
+• Owning the full acquisition stack  
+
+---
+
+# 📫 Connect
+
+🌍 https://sigsolutions.co.za  
+📩 franz@sigsolutions.co.za  
 
 ---
 

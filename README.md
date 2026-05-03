@@ -91,15 +91,6 @@ AI workflows         Autonomous ad creative pipelines, voice qualification agent
 
 ---
 
-### Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=bully911210&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&icon_color=58a6ff&text_color=c9d1d9" height="180" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=bully911210&layout=compact&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&text_color=c9d1d9" height="180" />
-</p>
-
----
-
 ```
 Infrastructure > aesthetics
 Control > dependency

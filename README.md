@@ -2,7 +2,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0d1117&height=120&section=header" width="100%" />
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=28&duration=3000&pause=1000&color=58A6FF&center=true&vCenter=true&width=600&lines=Revenue+Infrastructure+Engineer;Dialers+%E2%80%A2+Lead+Engines+%E2%80%A2+AI+Workflows;Pretoria%2C+South+Africa" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=28&duration=3000&pause=1000&color=58A6FF&center=true&vCenter=true&width=850&lines=Revenue+Infrastructure+Engineer;Dialers+%E2%80%A2+Lead+Engines+%E2%80%A2+AI+Workflows;Pretoria%2C+South+Africa" alt="Typing SVG" /></a>
 
 </div>
 

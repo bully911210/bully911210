@@ -56,7 +56,6 @@ I build the systems between ad spend and closed sales. Dialers, lead engines, co
 | 🏛 | **[Civil Society South Africa](https://civilsocietysouthafrica.co.za)** | Civic advocacy NGO: broad-mandate campaigns for minority-impacting issues |
 | 📈 | **[Stacked Marketing](https://stackedmarketing.co.za)** | AI-enabled performance marketing agency |
 | 📝 | **[LicenceReady.co.za](https://licenceready.co.za)** | Firearm motivation letter generator with localised crime data and guided next steps |
-| 🗳 | **Voice of Change** | Petition-to-fundraising conversion system |
 
 ---
 

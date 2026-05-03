@@ -1,146 +1,82 @@
-# Hi, I'm Franz 👋
+# Franz Badenhorst
 
-📍 Pretoria, South Africa  
-🔥 Revenue Infrastructure Operator  
-⚙️ Lead Engines • Dialer Systems • AI Workflows  
-🏢 CSO @ SIG Solutions  
+**Revenue infrastructure engineer. Pretoria, South Africa.**
 
----
+I don't build apps. I build the systems that turn ad spend into recurring revenue — dialers, lead engines, conversion pipelines, AI workflows. Every component engineered around one metric: **cost per closed sale.**
 
-## ⚡ Stack
-
-![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql&logoColor=white)
-![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?logo=supabase&logoColor=white)
-![Playwright](https://img.shields.io/badge/-Playwright-2EAD33?logo=playwright&logoColor=white)
-![Meta Ads](https://img.shields.io/badge/-Meta%20Ads-1877F2?logo=meta&logoColor=white)
-![ViciDial](https://img.shields.io/badge/-ViciDial-222222?logo=asterisk&logoColor=white)
-![n8n](https://img.shields.io/badge/-n8n-EA4B71?logo=n8n&logoColor=white)
-![Make](https://img.shields.io/badge/-Make-6C63FF?logo=make&logoColor=white)
-![Claude](https://img.shields.io/badge/-Claude-000000?logo=anthropic&logoColor=white)
+Six figures deployed in Meta ad spend. 50+ agent call centre. Five business entities running on infrastructure I built.
 
 ---
 
-I don’t build apps.  
-I build **revenue infrastructure.**
+### Stack
 
-High-volume acquisition systems for:
+![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square)
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=black&style=flat-square)
+![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=nextdotjs&logoColor=white&style=flat-square)
+![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=nodedotjs&logoColor=white&style=flat-square)
+![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql&logoColor=white&style=flat-square)
+![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?logo=supabase&logoColor=white&style=flat-square)
+![Tailwind](https://img.shields.io/badge/-Tailwind-06B6D4?logo=tailwindcss&logoColor=white&style=flat-square)
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white&style=flat-square)
+![FFmpeg](https://img.shields.io/badge/-FFmpeg-007808?logo=ffmpeg&logoColor=white&style=flat-square)
+![Playwright](https://img.shields.io/badge/-Playwright-2EAD33?logo=playwright&logoColor=white&style=flat-square)
 
-• Insurance  
-• Legal liability  
-• Subscription fundraising  
-• Advocacy campaigns  
-• Petition-to-donor pipelines  
-
-Everything engineered around:
-
-**Conversion × Data Control × Operational Leverage**
-
----
-
-# 🚀 Current Builds
-
-🛡 **Acorn Brokers**  
-Legal liability & insurance acquisition engine targeting firearm owners in South Africa.
-
-🌐 **LeadLabs**  
-Conversion-first growth stack for scalable lead generation & automation.
-
-📡 **VeldNET**  
-Geo-triggered real-time security alert infrastructure.
-
-🗳 **Voice of Change**  
-Petition → Fundraising conversion machine.
-
-☎️ **DialRite**  
-ViciDial-safe export engine with reconciliation & duplicate suppression logic.
-
-🧠 **SA Phone Engine**  
-Strict South African telecom normalization & validation framework.
+![Meta Ads](https://img.shields.io/badge/-Meta%20Ads-1877F2?logo=meta&logoColor=white&style=flat-square)
+![ViciDial](https://img.shields.io/badge/-ViciDial-222222?logo=asterisk&logoColor=white&style=flat-square)
+![GoHighLevel](https://img.shields.io/badge/-GoHighLevel-FF6B00?style=flat-square)
+![n8n](https://img.shields.io/badge/-n8n-EA4B71?logo=n8n&logoColor=white&style=flat-square)
+![Make](https://img.shields.io/badge/-Make-6C63FF?logo=make&logoColor=white&style=flat-square)
+![Claude](https://img.shields.io/badge/-Claude-D4A574?logo=anthropic&logoColor=white&style=flat-square)
+![ElevenLabs](https://img.shields.io/badge/-ElevenLabs-000000?style=flat-square)
+![FreePBX](https://img.shields.io/badge/-FreePBX-C42D2D?logo=asterisk&logoColor=white&style=flat-square)
 
 ---
 
-# ⚙️ Systems I Ship
+### What I build
 
-## 🔥 Lead Acquisition Engines
+**Lead acquisition engines** — Meta Ads scaling, instant form pipelines, CAPI integrations, viral petition funnels, audience compounding, cost-per-sale optimisation.
 
-• Meta Ads scaling systems  
-• Instant Form → CRM pipelines  
-• Conversion API integrations  
-• Viral petition funnels  
-• Audience compounding loops  
-• Cost-per-sale optimization frameworks  
+**Dialer infrastructure** — ViciDial campaign architecture, dialer-safe CSV exports, duplicate suppression, revenue-per-list analytics, contact lifecycle enforcement.
 
----
+**Data systems** — Supabase/Postgres warehouses, batch upload validation, cross-entity deduplication, SA telecom normalisation, campaign reconciliation layers.
 
-## 📊 Data Infrastructure
-
-• Supabase / PostgreSQL warehouses  
-• Batch upload validation engines  
-• Deduplication frameworks  
-• SA phone normalization logic  
-• List-level performance tracking  
-• Campaign reconciliation layers  
+**AI workflows** — Autonomous ad creative pipelines, AI voice qualification agents, agent-orchestrated lead routing, LLM-assisted QA and compliance gating.
 
 ---
 
-## ☎️ Dialer Infrastructure
+### Current projects
 
-• ViciDial campaign architecture  
-• Dialer-safe CSV export systems  
-• Duplicate suppression engines  
-• Revenue-per-list analytics  
-• Contact lifecycle monitoring  
-• Data integrity enforcement  
-
----
-
-## 🤖 Automation & AI Workflows
-
-• N8N orchestration layers  
-• Make automation systems  
-• Playwright automation stacks  
-• AI-assisted QA tooling  
-• Workflow-triggered reporting  
-• Agent-enhanced operational control  
+| Project | What it does |
+|---|---|
+| **Acorn Brokers** | Legal liability acquisition engine for SA firearm owners |
+| **SA Phone Engine** | Strict South African telecom normalisation and validation |
+| **DialRite** | ViciDial-safe export engine with reconciliation and dedup |
+| **LeadLabs** | Conversion-first growth stack for scalable lead gen |
+| **VeldNET** | Geo-triggered real-time security alert infrastructure |
+| **Voice of Change** | Petition-to-fundraising conversion system |
 
 ---
 
-# 📈 GitHub Activity
+### Stats
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=bully911210&show_icons=true&theme=dark&hide_border=true)
-![GitHub Streak](https://streak-stats.demolab.com?user=bully911210&theme=dark&hide_border=true)
-
----
-
-# 🎯 Focus
-
-Infrastructure > aesthetics  
-Control > dependency  
-Ownership > outsourcing  
-Systems > hacks  
-
-Most businesses rent their growth.  
-I internalize it.
+<p>
+  <img src="https://github-readme-stats.vercel.app/api?username=bully911210&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&icon_color=58a6ff&text_color=c9d1d9" height="165" />
+  <img src="https://streak-stats.demolab.com?user=bully911210&theme=dark&hide_border=true&background=0D1117&ring=58A6FF&fire=58A6FF&currStreakLabel=58A6FF" height="165" />
+</p>
 
 ---
 
-# 🧠 What Drives Me
+### Philosophy
 
-• First principles thinking  
-• High-leverage system design  
-• South African market specialization  
-• Converting attention into revenue  
-• Owning the full acquisition stack  
+```
+Infrastructure > aesthetics
+Control > dependency
+Ownership > outsourcing
+Systems > hacks
+```
 
----
-
-# 📫 Connect
-
-🌍 https://sigsolutions.co.za  
-📩 franz@sigsolutions.co.za  
+Most businesses rent their growth. I internalise it.
 
 ---
 
-_"Control the system. Control the outcome."_
-
+<sub>📍 Pretoria, South Africa · 🌍 [sigsolutions.co.za](https://sigsolutions.co.za) · 📩 [franz@sigsolutions.co.za](mailto:franz@sigsolutions.co.za)</sub>

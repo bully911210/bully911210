@@ -2,9 +2,7 @@
 
 **Revenue infrastructure engineer. Pretoria, South Africa.**
 
-I don't build apps. I build the systems that turn ad spend into recurring revenue — dialers, lead engines, conversion pipelines, AI workflows. Every component engineered around one metric: **cost per closed sale.**
-
-Six figures deployed in Meta ad spend. 50+ agent call centre. Five business entities running on infrastructure I built.
+I build the systems between ad spend and closed sales — dialers, lead engines, conversion pipelines, AI workflows. Everything engineered around one metric: **cost per closed sale.**
 
 ---
 
@@ -32,15 +30,15 @@ Six figures deployed in Meta ad spend. 50+ agent call centre. Five business enti
 
 ---
 
-### What I build
+### What I work on
 
-**Lead acquisition engines** — Meta Ads scaling, instant form pipelines, CAPI integrations, viral petition funnels, audience compounding, cost-per-sale optimisation.
+**Lead acquisition** — Meta Ads pipelines, instant form routing, CAPI integrations, petition funnels, audience compounding, cost-per-sale tracking.
 
-**Dialer infrastructure** — ViciDial campaign architecture, dialer-safe CSV exports, duplicate suppression, revenue-per-list analytics, contact lifecycle enforcement.
+**Dialer systems** — ViciDial campaign builds, dialer-safe exports, duplicate suppression, revenue-per-list analytics, contact lifecycle management.
 
-**Data systems** — Supabase/Postgres warehouses, batch upload validation, cross-entity deduplication, SA telecom normalisation, campaign reconciliation layers.
+**Data infrastructure** — Supabase/Postgres warehouses, batch validation, cross-entity deduplication, SA telecom normalisation, campaign reconciliation.
 
-**AI workflows** — Autonomous ad creative pipelines, AI voice qualification agents, agent-orchestrated lead routing, LLM-assisted QA and compliance gating.
+**AI workflows** — Autonomous ad creative generation, voice qualification agents, agent-orchestrated routing, LLM-assisted compliance gating.
 
 ---
 
@@ -49,7 +47,7 @@ Six figures deployed in Meta ad spend. 50+ agent call centre. Five business enti
 | Project | What it does |
 |---|---|
 | **Acorn Brokers** | Legal liability acquisition engine for SA firearm owners |
-| **SA Phone Engine** | Strict South African telecom normalisation and validation |
+| **SA Phone Engine** | South African telecom normalisation and validation |
 | **DialRite** | ViciDial-safe export engine with reconciliation and dedup |
 | **LeadLabs** | Conversion-first growth stack for scalable lead gen |
 | **VeldNET** | Geo-triggered real-time security alert infrastructure |
@@ -66,16 +64,12 @@ Six figures deployed in Meta ad spend. 50+ agent call centre. Five business enti
 
 ---
 
-### Philosophy
-
 ```
 Infrastructure > aesthetics
 Control > dependency
 Ownership > outsourcing
 Systems > hacks
 ```
-
-Most businesses rent their growth. I internalise it.
 
 ---
 

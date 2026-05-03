@@ -6,7 +6,16 @@
 
 </div>
 
-I build the systems between ad spend and closed sales. Dialers, lead engines, conversion pipelines, AI workflows. Everything engineered around one metric: **cost per closed sale.**
+```ts
+const franz = {
+  location: "Pretoria, South Africa",
+  focus: "Revenue infrastructure — the systems between ad spend and closed sales",
+  stack: ["TypeScript", "React", "Next.js", "Node.js", "Python", "PostgreSQL", "Supabase"],
+  infra: ["ViciDial", "FreePBX", "FFmpeg", "Playwright", "GoHighLevel"],
+  ai:    ["Claude", "ElevenLabs", "n8n", "Make"],
+  metric: "cost per closed sale",
+};
+```
 
 ---
 
@@ -56,22 +65,27 @@ I build the systems between ad spend and closed sales. Dialers, lead engines, co
 | 🏛 | **[Civil Society South Africa](https://civilsocietysouthafrica.co.za)** | Civic advocacy NGO: broad-mandate campaigns for minority-impacting issues |
 | 📈 | **[Stacked Marketing](https://stackedmarketing.co.za)** | AI-enabled performance marketing agency |
 | 📝 | **[LicenceReady.co.za](https://licenceready.co.za)** | Firearm motivation letter generator with localised crime data and guided next steps |
-| 🗳 | **Voice of Change** | Petition-to-fundraising conversion system |
 
 ---
 
 <details>
-<summary><b>What I work on</b></summary>
+<summary><b>Systems I ship</b></summary>
 
 <br>
 
-**Lead acquisition** — Meta Ads pipelines, instant form routing, CAPI integrations, petition funnels, audience compounding, cost-per-sale tracking.
+```
+Lead acquisition     Meta Ads pipelines, instant form routing, CAPI integrations,
+                     petition funnels, audience compounding, cost-per-sale tracking
 
-**Dialer systems** — ViciDial campaign builds, dialer-safe exports, duplicate suppression, revenue-per-list analytics, contact lifecycle management.
+Dialer systems       ViciDial campaign builds, dialer-safe exports, duplicate
+                     suppression, revenue-per-list analytics, contact lifecycle mgmt
 
-**Data infrastructure** — Supabase/Postgres warehouses, batch validation, cross-entity deduplication, SA telecom normalisation, campaign reconciliation.
+Data infrastructure  Supabase/Postgres warehouses, batch validation, cross-entity
+                     dedup, SA telecom normalisation, campaign reconciliation
 
-**AI workflows** — Autonomous ad creative generation, voice qualification agents, agent-orchestrated routing, LLM-assisted compliance gating.
+AI workflows         Autonomous ad creative pipelines, voice qualification agents,
+                     agent-orchestrated routing, LLM-assisted compliance gating
+```
 
 </details>
 
@@ -80,12 +94,8 @@ I build the systems between ad spend and closed sales. Dialers, lead engines, co
 ### Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=bully911210&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&icon_color=58a6ff&text_color=c9d1d9" height="165" />
-  <img src="https://streak-stats.demolab.com?user=bully911210&theme=dark&hide_border=true&background=0D1117&ring=58A6FF&fire=58A6FF&currStreakLabel=58A6FF" height="165" />
-</p>
-
-<p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=bully911210&theme=darkhub&no-frame=true&column=6&margin-w=10" />
+  <img src="https://github-readme-stats.vercel.app/api?username=bully911210&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&icon_color=58a6ff&text_color=c9d1d9" height="180" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=bully911210&layout=compact&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&text_color=c9d1d9" height="180" />
 </p>
 
 ---

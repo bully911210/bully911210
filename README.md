@@ -51,10 +51,10 @@ I build the systems between ad spend and closed sales. Dialers, lead engines, co
 
 | | Project | Description |
 |---|---|---|
-| 🛡 | **[Acorn Brokers](https://sigsolutions.co.za)** | Legal liability acquisition engine for SA firearm owners |
-| ☎️ | **SIG Solutions** | BPO call centre with dialer infrastructure and AI voice routing |
-| 🏛 | **Civil Society South Africa** | Civic advocacy NGO: broad-mandate campaigns for minority-impacting issues |
-| 📈 | **Stacked Marketing** | AI-enabled performance marketing agency |
+| 🛡 | **[Acorn Brokers](https://acornbrokers.co.za)** | Legal liability acquisition engine for SA firearm owners |
+| ☎️ | **[SIG Solutions](https://sigsolutions.co.za)** | BPO call centre with dialer infrastructure and AI voice routing |
+| 🏛 | **[Civil Society South Africa](https://civilsocietysouthafrica.co.za)** | Civic advocacy NGO: broad-mandate campaigns for minority-impacting issues |
+| 📈 | **[Stacked Marketing](https://stackedmarketing.co.za)** | AI-enabled performance marketing agency |
 | 📝 | **[LicenceReady.co.za](https://licenceready.co.za)** | Firearm motivation letter generator with localised crime data and guided next steps |
 | 🗳 | **Voice of Change** | Petition-to-fundraising conversion system |
 

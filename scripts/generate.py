@@ -150,7 +150,9 @@ def activity(D):
     days = D["days"][-371:]; cur, best = streaks(D["days"])
     mx = max([c for _, c in days] + [1])
     x0, y0, cs = 40, 76, 16
-    lv = lambda c: 0 if c == 0 else 1 + min(3, int(4 * c / (mx + 1)))
+    nz = sorted(c for _, c in days if c) or [1]
+    q = [nz[int(len(nz) * f)] for f in (0.25, 0.5, 0.75)]
+    lv = lambda c: 0 if c == 0 else 1 + sum(c > t for t in q)
     shades = [PANEL, "#4a3300", "#8a6200", "#cc8f00", A]
     cells = []
     first = dt.date.fromisoformat(days[0][0]); off = (first.weekday() + 1) % 7

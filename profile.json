@@ -1,16 +1,15 @@
 {
   "login": "bully911210",
   "name": "Franz Badenhorst",
-  "tagline": "revenue infrastructure engineer / pretoria",
+  "tagline": "revenue infrastructure engineer / systems between attention and cash",
   "users": null,
   "users_label": "USERS",
   "ticker": [
-    "META ADS",
-    "CRM",
-    "VICIDIAL",
-    "AI QUALIFY",
-    "CLOSED SALE",
-    "OWN THE STACK"
+    "TRAFFIC",
+    "DATA",
+    "DECISION",
+    "ACTION",
+    "CASH"
   ],
   "ventures": [
     {
@@ -44,57 +43,6 @@
       "tag": "SAAS"
     }
   ],
-  "pipeline": [
-    "META ADS",
-    "CONTACT DB",
-    "VICIDIAL",
-    "AGENT + AI",
-    "CLOSED SALE"
-  ],
-  "systems": [
-    [
-      "LEAD ACQUISITION",
-      "meta pipelines, instant forms, CAPI, petition funnels"
-    ],
-    [
-      "DIALLER SYSTEMS",
-      "vicidial builds, list logic, dedup, revenue per list"
-    ],
-    [
-      "DATA INFRA",
-      "postgres + supabase warehouses, SA telecom normalisation"
-    ],
-    [
-      "AI WORKFLOWS",
-      "creative pipelines, voice qualification, compliance gates"
-    ]
-  ],
-  "stack": {
-    "BUILD": [
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Node.js",
-      "Python",
-      "Tailwind"
-    ],
-    "RUN": [
-      "PostgreSQL",
-      "Supabase",
-      "ViciDial",
-      "FreePBX",
-      "FFmpeg",
-      "Playwright"
-    ],
-    "SELL": [
-      "Meta Ads",
-      "GoHighLevel",
-      "n8n",
-      "Make",
-      "Claude",
-      "ElevenLabs"
-    ]
-  },
   "principles": [
     [
       "INFRASTRUCTURE",
@@ -118,5 +66,93 @@
     "url": "https://github.com/bully911210",
     "line": "underway. the next build is already in the dialler",
     "tag": "BUILDING"
-  }
+  },
+  "mode": "BUILD + OPERATE",
+  "base": "PRETORIA",
+  "project": {
+    "number": "1667",
+    "status": "ACTIVE",
+    "type": "REVENUE INFRASTRUCTURE",
+    "objective": null,
+    "phase": null,
+    "progress": null,
+    "now": null,
+    "next": null,
+    "story": [
+      "1666 projects came before this one.",
+      "Most were experiments.",
+      "Some shipped. Some became businesses.",
+      "#1667 is the current system."
+    ]
+  },
+  "system_map": {
+    "top": [
+      "ATTENTION",
+      "META ADS",
+      "LEAD",
+      "CRM",
+      "DIALLER"
+    ],
+    "branch": [
+      "AI",
+      "HUMAN"
+    ],
+    "bottom": [
+      "SALE",
+      "COLLECTION",
+      "DATA"
+    ],
+    "feedback": "cost per closed sale feeds the next bid"
+  },
+  "field_notes": [
+    {
+      "n": "001",
+      "date": "24 SEP 2026",
+      "text": [
+        "If a task repeats weekly, has a defined input and output,",
+        "and a mistake costs money, it gets built."
+      ]
+    },
+    {
+      "n": "002",
+      "date": "24 SEP 2026",
+      "text": [
+        "If it needs judgement that changes with context,",
+        "it stays with a human and gets better tooling."
+      ]
+    },
+    {
+      "n": "003",
+      "date": "24 SEP 2026",
+      "text": [
+        "Every box in the pipeline replaced a spreadsheet,",
+        "a WhatsApp group or a person copying numbers."
+      ]
+    },
+    {
+      "n": "004",
+      "date": "24 SEP 2026",
+      "text": [
+        "Cost per closed sale is the only number",
+        "that survives contact with a P&L."
+      ]
+    },
+    {
+      "n": "005",
+      "date": "24 SEP 2026",
+      "text": [
+        "Own the stack,",
+        "not the subscription."
+      ]
+    }
+  ],
+  "operator_loop": [
+    "OPERATE",
+    "BOTTLENECK",
+    "BUILD",
+    "AUTOMATE",
+    "OPERATE",
+    "NEW BOTTLENECK",
+    "BUILD AGAIN"
+  ]
 }

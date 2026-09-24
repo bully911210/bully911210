@@ -1,0 +1,122 @@
+{
+  "login": "bully911210",
+  "name": "Franz Badenhorst",
+  "tagline": "revenue infrastructure engineer / pretoria",
+  "users": null,
+  "users_label": "USERS",
+  "ticker": [
+    "META ADS",
+    "CRM",
+    "VICIDIAL",
+    "AI QUALIFY",
+    "CLOSED SALE",
+    "OWN THE STACK"
+  ],
+  "ventures": [
+    {
+      "name": "SIG Solutions",
+      "url": "https://sigsolutions.co.za",
+      "line": "50+ seat outbound BPO, owned dialler, AI voice routing",
+      "tag": "BPO"
+    },
+    {
+      "name": "Acorn Brokers",
+      "url": "https://acornbrokers.co.za",
+      "line": "Authorised FSP, legal protection for licensed firearm owners",
+      "tag": "FSP"
+    },
+    {
+      "name": "Civil Society SA",
+      "url": "https://civilsocietysouthafrica.co.za",
+      "line": "Civic advocacy NGO, broad-mandate campaigns",
+      "tag": "NGO"
+    },
+    {
+      "name": "Stacked Marketing",
+      "url": "https://stackedmarketing.co.za",
+      "line": "AI-enabled performance marketing agency",
+      "tag": "AGENCY"
+    },
+    {
+      "name": "LicenceReady",
+      "url": "https://licenceready.co.za",
+      "line": "Firearm motivation letters with local crime data",
+      "tag": "SAAS"
+    }
+  ],
+  "pipeline": [
+    "META ADS",
+    "CONTACT DB",
+    "VICIDIAL",
+    "AGENT + AI",
+    "CLOSED SALE"
+  ],
+  "systems": [
+    [
+      "LEAD ACQUISITION",
+      "meta pipelines, instant forms, CAPI, petition funnels"
+    ],
+    [
+      "DIALLER SYSTEMS",
+      "vicidial builds, list logic, dedup, revenue per list"
+    ],
+    [
+      "DATA INFRA",
+      "postgres + supabase warehouses, SA telecom normalisation"
+    ],
+    [
+      "AI WORKFLOWS",
+      "creative pipelines, voice qualification, compliance gates"
+    ]
+  ],
+  "stack": {
+    "BUILD": [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Node.js",
+      "Python",
+      "Tailwind"
+    ],
+    "RUN": [
+      "PostgreSQL",
+      "Supabase",
+      "ViciDial",
+      "FreePBX",
+      "FFmpeg",
+      "Playwright"
+    ],
+    "SELL": [
+      "Meta Ads",
+      "GoHighLevel",
+      "n8n",
+      "Make",
+      "Claude",
+      "ElevenLabs"
+    ]
+  },
+  "principles": [
+    [
+      "INFRASTRUCTURE",
+      "AESTHETICS"
+    ],
+    [
+      "CONTROL",
+      "DEPENDENCY"
+    ],
+    [
+      "OWNERSHIP",
+      "OUTSOURCING"
+    ],
+    [
+      "SYSTEMS",
+      "HACKS"
+    ]
+  ],
+  "filler": {
+    "name": "Project #1667",
+    "url": "https://github.com/bully911210",
+    "line": "underway. the next build is already in the dialler",
+    "tag": "BUILDING"
+  }
+}

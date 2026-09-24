@@ -1,7 +1,7 @@
 {
   "login": "bully911210",
   "name": "Franz Badenhorst",
-  "tagline": "revenue infrastructure engineer / systems between attention and cash",
+  "tagline": "revenue infrastructure engineer",
   "users": null,
   "users_label": "USERS",
   "ticker": [
@@ -10,38 +10,6 @@
     "DECISION",
     "ACTION",
     "CASH"
-  ],
-  "ventures": [
-    {
-      "name": "SIG Solutions",
-      "url": "https://sigsolutions.co.za",
-      "line": "50+ seat outbound BPO, owned dialler, AI voice routing",
-      "tag": "BPO"
-    },
-    {
-      "name": "Acorn Brokers",
-      "url": "https://acornbrokers.co.za",
-      "line": "Authorised FSP, legal protection for licensed firearm owners",
-      "tag": "FSP"
-    },
-    {
-      "name": "Civil Society SA",
-      "url": "https://civilsocietysouthafrica.co.za",
-      "line": "Civic advocacy NGO, broad-mandate campaigns",
-      "tag": "NGO"
-    },
-    {
-      "name": "Stacked Marketing",
-      "url": "https://stackedmarketing.co.za",
-      "line": "AI-enabled performance marketing agency",
-      "tag": "AGENCY"
-    },
-    {
-      "name": "LicenceReady",
-      "url": "https://licenceready.co.za",
-      "line": "Firearm motivation letters with local crime data",
-      "tag": "SAAS"
-    }
   ],
   "principles": [
     [
@@ -61,27 +29,19 @@
       "HACKS"
     ]
   ],
-  "filler": {
-    "name": "Project #1667",
-    "url": "https://github.com/bully911210",
-    "line": "underway. the next build is already in the dialler",
-    "tag": "BUILDING"
-  },
   "mode": "BUILD + OPERATE",
   "base": "PRETORIA",
   "project": {
     "number": "1667",
-    "status": "ACTIVE",
     "type": "REVENUE INFRASTRUCTURE",
-    "objective": null,
-    "phase": null,
-    "progress": null,
-    "now": null,
-    "next": null,
+    "objective": "close the loop from attention to cash",
+    "next": "closed-loop optimisation",
     "story": [
       "1666 projects came before this one.",
       "Most were experiments.",
-      "Some shipped. Some became businesses.",
+      "Some became businesses.",
+      "Some died.",
+      "Some became infrastructure.",
       "#1667 is the current system."
     ]
   },
@@ -108,41 +68,25 @@
     {
       "n": "001",
       "date": "24 SEP 2026",
-      "text": [
-        "If a task repeats weekly, has a defined input and output,",
-        "and a mistake costs money, it gets built."
+      "lines": [
+        "The bottleneck is rarely the model.",
+        "It's the handoff."
       ]
     },
     {
       "n": "002",
       "date": "24 SEP 2026",
-      "text": [
-        "If it needs judgement that changes with context,",
-        "it stays with a human and gets better tooling."
+      "lines": [
+        "A lead isn't a lead.",
+        "It's a state transition waiting to happen."
       ]
     },
     {
       "n": "003",
       "date": "24 SEP 2026",
-      "text": [
-        "Every box in the pipeline replaced a spreadsheet,",
-        "a WhatsApp group or a person copying numbers."
-      ]
-    },
-    {
-      "n": "004",
-      "date": "24 SEP 2026",
-      "text": [
-        "Cost per closed sale is the only number",
-        "that survives contact with a P&L."
-      ]
-    },
-    {
-      "n": "005",
-      "date": "24 SEP 2026",
-      "text": [
-        "Own the stack,",
-        "not the subscription."
+      "lines": [
+        "The useful unit of automation isn't the task.",
+        "It's the decision."
       ]
     }
   ],
@@ -154,5 +98,79 @@
     "OPERATE",
     "NEW BOTTLENECK",
     "BUILD AGAIN"
-  ]
+  ],
+  "exclude_repos": [
+    "bully911210",
+    "assets"
+  ],
+  "thesis": "I build the systems between attention and cash.",
+  "location": "PRETORIA, ZA",
+  "opmodel": {
+    "row1": [
+      "ATTENTION",
+      "META ADS",
+      "LEAD",
+      "CRM",
+      "DIALLER"
+    ],
+    "split": [
+      "AI",
+      "HUMAN"
+    ],
+    "row2": [
+      "SALE",
+      "COLLECTION",
+      "DATA"
+    ],
+    "return": "back to ads"
+  },
+  "loop": {
+    "nodes": [
+      "OPERATE",
+      "BOTTLENECK",
+      "BUILD",
+      "AUTOMATE",
+      "NEW BOTTLENECK"
+    ],
+    "story": [
+      "An operator who learned to build software",
+      "because existing software couldn't move fast enough.",
+      "",
+      "The code isn't the destination.",
+      "It's the weapon."
+    ]
+  },
+  "evidence": [
+    {
+      "name": "SIG SOLUTIONS",
+      "line": "50+ seat outbound operation",
+      "tag": "BPO",
+      "url": "https://sigsolutions.co.za"
+    },
+    {
+      "name": "ACORN BROKERS",
+      "line": "insurance distribution",
+      "tag": "FSP",
+      "url": "https://acornbrokers.co.za"
+    },
+    {
+      "name": "CIVIL SOCIETY SA",
+      "line": "digital acquisition + advocacy",
+      "tag": "NGO",
+      "url": "https://civilsocietysouthafrica.co.za"
+    },
+    {
+      "name": "STACKED MARKETING",
+      "line": "performance infrastructure",
+      "tag": "AGENCY",
+      "url": "https://stackedmarketing.co.za"
+    },
+    {
+      "name": "LICENCEREADY",
+      "line": "firearm motivation letters with local crime data",
+      "tag": "SAAS",
+      "url": "https://licenceready.co.za"
+    }
+  ],
+  "experiment_status": {}
 }

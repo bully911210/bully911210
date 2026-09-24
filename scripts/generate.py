@@ -88,7 +88,7 @@ def fetch():
     login = CFG["login"]
     u = gql("""query($l:String!){user(login:$l){createdAt followers{totalCount}
       repositories(ownerAffiliations:OWNER,privacy:PUBLIC,first:100,orderBy:{field:PUSHED_AT,direction:DESC}){totalCount
-        nodes{name description homepageUrl url stargazerCount isFork pushedAt primaryLanguage{name}}}
+        nodes{name description homepageUrl url stargazerCount isFork pushedAt createdAt primaryLanguage{name}}}
       contributionsCollection{restrictedContributionsCount contributionCalendar{totalContributions weeks{contributionDays{contributionCount date}}}}}}""", {"l": login})["user"]
     start = int(u["createdAt"][:4]); now = dt.datetime.now(dt.timezone.utc).year; alltime = 0
     for y in range(start, now + 1):
@@ -97,7 +97,7 @@ def fetch():
         alltime += c["user"]["contributionsCollection"]["contributionCalendar"]["totalContributions"]
     cal = u["contributionsCollection"]["contributionCalendar"]
     days = [(d["date"], d["contributionCount"]) for w in cal["weeks"] for d in w["contributionDays"]]
-    repos = [r for r in u["repositories"]["nodes"] if not r["isFork"]]
+    repos = [r for r in u["repositories"]["nodes"] if not r["isFork"] and r["name"] not in CFG.get("exclude_repos", [])]
     return {"alltime": alltime, "year": cal["totalContributions"], "days": days, "repos": repos,
             "repo_count": u["repositories"]["totalCount"], "since": u["createdAt"][:10]}
 
@@ -111,58 +111,168 @@ def streaks(days):
     return cur, best
 
 # ---------------- cards ----------------
-def fmt_date(iso):
-    d = dt.datetime.fromisoformat(iso.replace("Z", "+00:00"))
-    return d.strftime("%d %b %Y / %H:%M").upper()
+def box(x, y, w, h, label, fill=None, delay=0, period=4.5, size=14, fc=None):
+    f = fill or BG
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="4" fill="{f}" stroke="{A}" stroke-opacity="0.45">'
+            f'<animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="{period}s" begin="{delay:.2f}s" repeatCount="indefinite"/></rect>'
+            + T(label, x + w / 2, y + h / 2 + size * 0.36, size, fc or (BG if fill == A else A), 700, anchor="middle"))
+def dash(d, col=DIM, rev=False):
+    return f'<path d="{d}" fill="none" stroke="{col}" stroke-width="1.5" stroke-dasharray="3 5"><animate attributeName="stroke-dashoffset" values="0;{16 if rev else -16}" dur="0.6s" repeatCount="indefinite"/></path>'
+def packets(path, n=3, dur=6, r=5):
+    return "".join(f'<circle r="{r}" fill="{A}" filter="url(#gl)"><animateMotion path="{path}" dur="{dur}s" begin="-{k*dur/n:.2f}s" repeatCount="indefinite"/></circle>' for k in range(n))
 
 def header(D):
-    w, h = 1200, 360
+    w, h = 1200, 400
     live = [r for r in D["repos"] if r.get("homepageUrl")]
-    counters = [("CONTRIBUTIONS", D["alltime"]), ("REPOSITORIES", D["repo_count"]), ("LIVE BUILDS", len(live))]
-    if CFG.get("users"): counters.append((CFG.get("users_label", "USERS"), int(CFG["users"])))
+    last = max(D["repos"], key=lambda r: r["pushedAt"]) if D["repos"] else {"name": "-", "pushedAt": "----------"}
     ticker = "  >>  ".join(CFG["ticker"]) + "  >>  "
-    b = [f'<rect width="{w}" height="34" fill="#140e04"/>', flicker(marquee(ticker, 23, 14, A, 14))]
-    b.append(flicker(T(CFG["name"].upper(), 56, 124, 56, A, 800) + T(CFG["tagline"], 58, 160, 16, MID, 400)))
-    b.append(cursor(58 + W(CFG["tagline"], 16, 400) + 6, 160, 18, 10))
-    x = 58; n = len(counters); gap = 200 if n <= 3 else 170; size = 36 if n <= 3 else 30
-    for i, (lab, val) in enumerate(counters):
-        b.append(T(lab, x, 236, 12, DIM, 500))
-        od, wd = odometer(val, x, 284, size, delay=i * 0.35)
-        b.append(flicker(od)); x += max(gap, wd + 40)
-    # status panel (replaces radar)
-    px, py = 800, 64
-    b.append(f'<rect x="{px}" y="{py}" width="352" height="232" rx="6" fill="{PANEL}" stroke="{DARK}"/>')
-    last_push = max((r["pushedAt"] for r in D["repos"]), default=None)
-    week = sum(c for _, c in D["days"][-7:])
-    rows = [("MODE", CFG.get("mode", "BUILD")), ("BASE", CFG.get("base", "")), ("PROJECT", "#" + CFG["project"]["number"]),
-            ("LAST PUSH", fmt_date(last_push) if last_push else "-"), ("LAST 7 DAYS", f"{week} contributions")]
+    b = [f'<rect width="{w}" height="34" fill="#140e04"/>', flicker(marquee(ticker, 23, 14, A, 12))]
+    b.append(flicker(T(CFG["name"].upper(), 56, 126, 60, A, 800)))
+    b.append(T(CFG["tagline"].upper(), 58, 164, 18, MID, 500))
+    th, tw = text(CFG["thesis"], 58, 222, 22, A, 600)
+    cid = uid("th")
+    b.append(f'<clipPath id="{cid}"><rect x="56" y="196" height="36" width="0"><animate attributeName="width" values="0;{tw+4:.0f};{tw+4:.0f};0" keyTimes="0;0.35;0.9;1" dur="9s" repeatCount="indefinite"/></rect></clipPath>')
+    b.append(f'<g clip-path="url(#{cid})" filter="url(#gl)">{th}</g>')
+    b.append(f'<rect y="203" width="12" height="24" fill="{A}" filter="url(#gl)"><animate attributeName="x" values="58;{58+tw+6:.0f};{58+tw+6:.0f};58" keyTimes="0;0.35;0.9;1" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" calcMode="discrete" dur="0.9s" repeatCount="indefinite"/></rect>')
+    x = 58
+    for i, (lab, val) in enumerate([("CONTRIBUTIONS", D["alltime"]), ("REPOSITORIES", D["repo_count"]), ("LIVE BUILDS", len(live))] + ([(CFG.get("users_label", "USERS"), int(CFG["users"]))] if CFG.get("users") else [])):
+        b.append(T(lab, x, 300, 12, DIM, 500)); od, ow = odometer(val, x, 346, 34, delay=i * 0.35); b.append(flicker(od)); x += max(170, ow + 50)
+    px, py, pw, ph = 800, 70, 360, 300
+    b.append(f'<rect x="{px}" y="{py}" width="{pw}" height="{ph}" rx="6" fill="{PANEL}" stroke="{DARK}"/>')
+    b.append(T("SYSTEM STATE", px + 20, py + 32, 13, DIM, 700) + f'<line x1="{px+20}" y1="{py+46}" x2="{px+pw-20}" y2="{py+46}" stroke="{DARK}"/>')
+    rows = [("MODE", CFG["mode"]), ("LOCATION", CFG["location"]), ("PROJECT", "#" + CFG["project"]["number"]), ("STATUS", "ACTIVE"),
+            ("LAST PUSH", last["pushedAt"][:10]), ("REPO", last["name"][:18])]
     for i, (k, v) in enumerate(rows):
-        y = py + 40 + i * 40
-        b.append(T(k, px + 22, y, 12, DIM, 500))
-        b.append(flicker(T(v, px + 132, y, 15, A, 700), 3 + i * 0.3))
-        if k == "PROJECT":
-            b.append(f'<circle cx="{px+132+W(v,15,700)+14:.0f}" cy="{y-5}" r="5" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.15;1" dur="1.2s" repeatCount="indefinite"/></circle>')
-    b.append(f'<rect x="{px}" y="{py}" width="352" height="3" fill="{A}" opacity="0.6"><animate attributeName="y" values="{py};{py+229};{py}" dur="5s" repeatCount="indefinite"/></rect>')
-    return card(w, h, "".join(b), f"{CFG['name']}, revenue infrastructure engineer, Pretoria, South Africa", border=False, roll=5)
+        yy = py + 84 + i * 36
+        b.append(T(k, px + 20, yy, 13, DIM, 500) + T(v, px + 140, yy, 15, A, 700))
+        if k == "STATUS":
+            b.append(f'<circle cx="{px+140+W(v,15,700)+14:.0f}" cy="{yy-5}" r="5" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.15;1" dur="1.2s" repeatCount="indefinite"/></circle>')
+    return card(w, h, "".join(b), f"{CFG['name']}, revenue infrastructure engineer. {CFG['thesis']}", border=False, roll=5)
 
-def section(label):
+def section(label, sub=""):
     w, h = 1200, 56
     p, wd = text(f"> {label}", 24, 36, 20, A, 700)
-    body = flicker(p) + cursor(24 + wd + 8, 36, 20, 11) + f'<line x1="{24+wd+36:.0f}" y1="29" x2="1176" y2="29" stroke="{DARK}" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" values="0;-16" dur="0.8s" repeatCount="indefinite"/></line>'
+    s2 = T(sub, 1176, 35, 12, DIM, 500, anchor="end") if sub else ""
+    end = 1176 - (W(sub, 12) + 24 if sub else 0)
+    body = flicker(p) + cursor(24 + wd + 8, 36, 20, 11) + s2 + f'<line x1="{24+wd+36:.0f}" y1="29" x2="{end:.0f}" y2="29" stroke="{DARK}" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" values="0;-16" dur="0.8s" repeatCount="indefinite"/></line>'
     return card(w, h, body, label.lower(), border=False, roll=3)
+
+def opmodel():
+    M = CFG["opmodel"]; w, h = 1200, 350; bw, bh = 170, 44
+    xs = [40 + i * 230 for i in range(5)]; y1, y2 = 50, 230
+    b = []
+    for i in range(4): b.append(dash(f"M{xs[i]+bw},{y1+bh/2} H{xs[i+1]}"))
+    dx = xs[4] + bw / 2; ai_y, hu_y = 150, 250
+    b.append(dash(f"M{dx},{y1+bh} V{ai_y}")); b.append(dash(f"M{xs[4]+bw},{y1+bh/2} H{xs[4]+bw+18} V{hu_y+bh/2} H{xs[4]+bw}"))
+    sx = xs[3]
+    b.append(dash(f"M{xs[4]},{ai_y+bh/2} H{sx+bw+30} V{y2-10+bh/2} H{sx+bw}")); b.append(dash(f"M{xs[4]},{hu_y+bh/2} H{sx+bw+30} V{y2-10+bh/2}"))
+    r2 = [xs[3], xs[2], xs[1]]
+    for i in range(2): b.append(dash(f"M{r2[i]},{y2-10+bh/2} H{r2[i+1]+bw}"))
+    b.append(dash(f"M{xs[1]+bw/2},{y2-10} V{y1+bh}", A))
+    b.append(T(M["return"], xs[1] + bw / 2 + 10, (y1 + bh + y2 - 10) / 2 + 4, 12, MID, 500))
+    main = (f"M{xs[0]+bw/2},{y1+bh/2} H{dx} V{ai_y+bh/2} H{sx+bw+30} V{y2-10+bh/2} H{xs[1]+bw/2} V{y1+bh/2}")
+    alt = (f"M{dx},{y1+bh/2} H{xs[4]+bw+18} V{hu_y+bh/2} H{sx+bw+30} V{y2-10+bh/2} H{xs[1]+bw/2} V{y1+bh/2} H{dx}")
+    b.append(packets(main, 3, 7)); b.append(packets(alt, 2, 6, 4))
+    for i, lab in enumerate(M["row1"]): b.append(box(xs[i], y1, bw, bh, lab, delay=i * 0.6, period=7))
+    b.append(box(xs[4], ai_y, bw, bh, M["split"][0], delay=3.1, period=7)); b.append(box(xs[4], hu_y, bw, bh, M["split"][1], delay=3.3, period=7))
+    for i, lab in enumerate(M["row2"]):
+        b.append(box(r2[i], y2 - 10, bw, bh, lab, fill=A if i == 0 else None, delay=4 + i * 0.6, period=7))
+    b.append(T("the technology is interchangeable. the architecture isn't.", 40, 330, 13, DIM, 400))
+    return card(w, h, flicker("".join(b)), "operating model: " + " to ".join(M["row1"] + M["row2"]).lower())
+
+def loop():
+    L = CFG["loop"]; w, h = 1200, 320; cx, cy, r = 300, 160, 112; n = len(L["nodes"])
+    b = [f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{DIM}" stroke-width="1.5" stroke-dasharray="3 5"><animateTransform attributeName="transform" type="rotate" from="0 {cx} {cy}" to="360 {cx} {cy}" dur="40s" repeatCount="indefinite"/></circle>']
+    circ = f"M{cx},{cy-r} a{r},{r} 0 1,1 0,{2*r} a{r},{r} 0 1,1 0,{-2*r}"
+    b.append(packets(circ, 2, 8, 6))
+    b.append(flicker(T("THE", cx, cy - 6, 14, DIM, 700, anchor="middle") + T("LOOP", cx, cy + 20, 26, A, 800, anchor="middle")))
+    for i, lab in enumerate(L["nodes"]):
+        a = -math.pi / 2 + i * 2 * math.pi / n; nx, ny = cx + r * math.cos(a), cy + r * math.sin(a)
+        bw = W(lab, 13, 700) + 24
+        b.append(box(nx - bw / 2, ny - 15, bw, 30, lab, delay=i * 8 / n, period=8, size=13))
+    for i, line in enumerate(L["story"]):
+        if not line: continue
+        yy = 104 + i * 32; big = i >= 3
+        seg = T(line, 600, yy, 22 if big else 18, A if big else MID, 700 if big else 400)
+        b.append(f'<g opacity="0">{seg}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.1:.2f};{i*0.1+0.04:.2f};0.92;1" dur="12s" repeatCount="indefinite"/></g>')
+    return card(w, h, "".join(b), "the loop: " + " to ".join(L["nodes"]).lower())
+
+def evidence(D):
+    E = CFG["evidence"]; w, h = 1200, 70 + 44 * len(E)
+    b = [T("$ ls operations/", 32, 38, 14, DIM, 500)]
+    for i, e in enumerate(E):
+        yy = 84 + i * 44
+        row = (f'<rect x="32" y="{yy-18}" width="{W(e["tag"],12,700)+16:.0f}" height="22" rx="3" fill="{A}"/>' + T(e["tag"], 40, yy - 2, 12, BG, 700)
+               + T(e["name"], 150, yy, 20, A, 800) + T(e["line"], 520, yy, 15, MID, 400) + T(e["url"].replace("https://", ""), 1168, yy, 12, DIM, 400, anchor="end"))
+        b.append(f'<g opacity="0">{row}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.06:.2f};{i*0.06+0.02:.2f};0.94;1" dur="14s" repeatCount="indefinite"/></g>')
+    return card(w, h, flicker("".join(b)), "evidence: " + ", ".join(e["name"].lower() for e in E))
+
+def project(D):
+    P = CFG["project"]; w, h = 1200, 330
+    last = max(D["repos"], key=lambda r: r["pushedAt"]) if D["repos"] else {"name": "-", "description": ""}
+    b = [flicker(T(f"PROJECT #{P['number']}", 32, 64, 44, A, 800))]
+    b.append(f'<rect x="{32+W("PROJECT #"+P["number"],44,800)+16:.0f}" y="30" width="22" height="34" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0" calcMode="discrete" dur="0.9s" repeatCount="indefinite"/></rect>')
+    rows = [("STATUS", "ACTIVE"), ("TYPE", P["type"]), ("OBJECTIVE", P["objective"]), ("CURRENTLY", f"{last['name']}"), ("NEXT", P["next"])]
+    for i, (k, v) in enumerate(rows):
+        yy = 118 + i * 34
+        b.append(T(k, 32, yy, 13, DIM, 500) + T(v[:40], 170, yy, 16, A if k in ("STATUS", "NEXT") else MID, 700 if k in ("STATUS", "NEXT") else 500))
+    b.append(f'<circle cx="{170+W("ACTIVE",16,700)+14:.0f}" cy="113" r="5" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.15;1" dur="1.2s" repeatCount="indefinite"/></circle>')
+    b.append(f'<rect x="32" y="290" width="560" height="10" rx="2" fill="{PANEL}" stroke="{DARK}"/><clipPath id="pb"><rect x="32" y="290" width="560" height="10"/></clipPath>'
+             f'<g clip-path="url(#pb)"><rect y="290" width="140" height="10" fill="{A}" filter="url(#gl)"><animate attributeName="x" values="-140;592" dur="2.4s" repeatCount="indefinite"/></rect></g>')
+    b.append(T("IN PROGRESS", 604, 300, 12, DIM, 700))
+    b.append(f'<line x1="760" y1="40" x2="760" y2="300" stroke="{DARK}"/>')
+    for i, line in enumerate(P["story"]):
+        last_line = i == len(P["story"]) - 1
+        seg = T(line, 790, 96 + i * 36, 20 if last_line else 16, A if last_line else MID, 800 if last_line else 400)
+        b.append(f'<g opacity="0">{seg}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.09:.2f};{i*0.09+0.03:.2f};0.93;1" dur="12s" repeatCount="indefinite"/></g>')
+    return card(w, h, "".join(b), f"project {P['number']}: {P['objective']}")
+
+def experiments(D):
+    reps = sorted(D["repos"], key=lambda r: r.get("createdAt", r["pushedAt"]))
+    idx = {r["name"]: i + 1 for i, r in enumerate(reps)}
+    now = dt.datetime.now(dt.timezone.utc)
+    def status(r):
+        o = CFG.get("experiment_status", {}).get(r["name"])
+        if o: return o
+        if r.get("homepageUrl"): return "SHIPPED"
+        age = (now - dt.datetime.fromisoformat(r["pushedAt"].replace("Z", "+00:00"))).days
+        return "ACTIVE" if age <= 21 else "DORMANT"
+    top = sorted(D["repos"], key=lambda r: r["pushedAt"], reverse=True)[:9]
+    w, h = 1200, 70 + 34 * len(top)
+    b = [T("ID", 32, 38, 12, DIM, 700) + T("EXPERIMENT", 150, 38, 12, DIM, 700) + T("NOTE", 560, 38, 12, DIM, 700) + T("STATUS", 1168, 38, 12, DIM, 700, anchor="end")]
+    for i, r in enumerate(top):
+        yy = 76 + i * 34; st = status(r); hot = st in ("ACTIVE", "SHIPPED")
+        row = (T(f"E-{idx[r['name']]:03d}", 32, yy, 15, MID, 500) + T(r["name"][:26].upper(), 150, yy, 15, A, 700)
+               + T((r.get("description") or "")[:44].lower(), 560, yy, 13, DIM, 400) + T(st, 1168, yy, 14, A if hot else DIM, 800 if hot else 500, anchor="end"))
+        if st == "ACTIVE":
+            row += f'<circle cx="{1168-W(st,14,800)-14:.0f}" cy="{yy-5}" r="4" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.1;1" dur="1s" begin="{i*0.2:.1f}s" repeatCount="indefinite"/></circle>'
+        b.append(f'<g opacity="0">{row}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.05:.2f};{i*0.05+0.015:.3f};0.95;1" dur="16s" repeatCount="indefinite"/></g>')
+    return card(w, h, flicker("".join(b)), "experiments")
+
+def field_notes():
+    N = CFG["field_notes"]; w, h = 1200, 200; per = 7; tot = per * len(N)
+    b = []
+    for i, n in enumerate(N):
+        s0 = i / len(N); s1 = (i + 1) / len(N)
+        g = T(f"FIELD NOTE / {n['n']}", 40, 50, 14, DIM, 700) + T(n["date"], 1160, 50, 12, DIM, 500, anchor="end")
+        for j, line in enumerate(n["lines"]):
+            g += T(line, 40, 104 + j * 42, 28 if j == len(n["lines"]) - 1 else 22, A if j == len(n["lines"]) - 1 else MID, 800 if j == len(n["lines"]) - 1 else 500)
+        kt = f"0;{s0:.3f};{s0+0.02:.3f};{s1-0.02:.3f};{s1:.3f};1" if i else f"0;0.02;{s1-0.02:.3f};{s1:.3f};1"
+        vals = "0;0;1;1;0;0" if i else "0;1;1;0;0"
+        b.append(f'<g opacity="0">{g}<animate attributeName="opacity" keyTimes="{kt}" values="{vals}" dur="{tot}s" repeatCount="indefinite"/></g>')
+    for i in range(len(N)):
+        b.append(f'<rect x="{40+i*28}" y="176" width="20" height="4" fill="{DARK}"/><rect x="{40+i*28}" y="176" width="20" height="4" fill="{A}" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{i/len(N):.3f};{i/len(N)+0.001:.3f};{(i+1)/len(N)-0.001:.3f};{(i+1)/len(N):.3f};1" dur="{tot}s" repeatCount="indefinite"/></rect>')
+    return card(w, h, flicker("".join(b)), "field notes")
 
 def activity(D):
     w, h = 1200, 250
     days = D["days"][-371:]; cur, best = streaks(D["days"])
-    mx = max([c for _, c in days] + [1])
     x0, y0, cs = 40, 76, 16
     nz = sorted(c for _, c in days if c) or [1]
     q = [nz[int(len(nz) * f)] for f in (0.25, 0.5, 0.75)]
     lv = lambda c: 0 if c == 0 else 1 + sum(c > t for t in q)
     shades = [PANEL, "#4a3300", "#8a6200", "#cc8f00", A]
-    cells = []
-    first = dt.date.fromisoformat(days[0][0]); off = (first.weekday() + 1) % 7
-    ncols = 0
+    cells = []; first = dt.date.fromisoformat(days[0][0]); off = (first.weekday() + 1) % 7; ncols = 0
     for i, (d, c) in enumerate(days):
         k = i + off; col, row = k // 7, k % 7; ncols = max(ncols, col + 1)
         x = x0 + col * (cs + 4); y = y0 + row * (cs + 4); l = lv(c); t = col / 54 * 6
@@ -173,197 +283,51 @@ def activity(D):
     beam = f'<linearGradient id="beam" x1="0" x2="1"><stop offset="0" stop-color="{A}" stop-opacity="0"/><stop offset="1" stop-color="{A}" stop-opacity="0.35"/></linearGradient>'
     stats = [("LAST 12 MONTHS", f"{D['year']:,}"), ("SINCE " + D["since"][:4], f"{D['alltime']:,}"), ("CURRENT STREAK", f"{cur}d"), ("LONGEST STREAK", f"{best}d")]
     top = "".join(T(lab, 40 + i * 290, 30, 12, DIM, 500) + flicker(T(v, 40 + i * 290, 58, 24, A, 700)) for i, (lab, v) in enumerate(stats))
-    return card(w, h, top + "".join(cells) + scan, "contribution activity", beam)
-
-
-def system_map():
-    M = CFG["system_map"]; w, h = 1200, 420; bw, bh = 176, 46
-    top = M["top"]; st = (1200 - 100 - bw) / (len(top) - 1); xs = [40 + i * st for i in range(len(top))]; yt = 70
-    br = M["branch"]; bx = xs[-1]; yb = [220, 300]
-    bot = M["bottom"]; bxs = [bx - st * (i + 1) for i in range(len(bot))]; yB = 260
-    C = lambda x, y: (x + bw / 2, y + bh / 2)
-    nodes = [(x, yt, t, False) for x, t in zip(xs, top)] + [(bx, y, t, False) for y, t in zip(yb, br)] + [(x, yB, t, i == 0) for i, (x, t) in enumerate(zip(bxs, bot))]
-    e = []
-    def edge(d, rev=False):
-        e.append(f'<path d="{d}" fill="none" stroke="{DIM}" stroke-width="1.5" stroke-dasharray="3 5"><animate attributeName="stroke-dashoffset" values="0;{16 if rev else -16}" dur="0.6s" repeatCount="indefinite"/></path>')
-    for i in range(len(top) - 1):
-        a, b_ = C(xs[i], yt), C(xs[i + 1], yt); edge(f"M{a[0]+bw/2},{a[1]} H{b_[0]-bw/2}")
-    dcx, dcy = C(bx, yt)
-    ai, hu = C(bx, yb[0]), C(bx, yb[1])
-    edge(f"M{dcx},{dcy+bh/2} V{ai[1]-bh/2}")
-    edge(f"M{dcx+bw/2},{dcy} h18 V{hu[1]} h-18")
-    s0 = C(bxs[0], yB)
-    edge(f"M{ai[0]-bw/2},{ai[1]} h-30 V{s0[1]} H{s0[0]+bw/2}"); edge(f"M{hu[0]-bw/2},{hu[1]} h-30 V{s0[1]}")
-    for i in range(len(bot) - 1):
-        a, b_ = C(bxs[i], yB), C(bxs[i + 1], yB); edge(f"M{a[0]-bw/2},{a[1]} H{b_[0]+bw/2}")
-    dl = C(bxs[-1], yB); at = C(xs[0], yt)
-    fb = f"M{dl[0]-bw/2},{dl[1]} H{at[0]} V{at[1]+bh/2}"
-    e.append(f'<path d="{fb}" fill="none" stroke="{A}" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="6 6"><animate attributeName="stroke-dashoffset" values="0;-24" dur="0.8s" repeatCount="indefinite"/></path>')
-    e.append(T(M["feedback"], at[0] + 16, 360, 13, DIM, 400))
-    # packets along full loop, via AI and via HUMAN
-    def route(via):
-        pts = [C(x, yt) for x in xs] + [via]
-        p = f"M{pts[0][0]},{pts[0][1]} " + " ".join(f"L{x},{y}" for x, y in pts[1:])
-        p += f" L{via[0]-bw/2-30},{via[1]} L{via[0]-bw/2-30},{s0[1]} " + " ".join(f"L{C(x,yB)[0]},{yB+bh/2}" for x in bxs)
-        p += f" L{at[0]},{dl[1]} L{at[0]},{at[1]}"
-        return p
-    pk = []
-    for k, via in enumerate([ai, hu, ai]):
-        pk.append(f'<circle r="6" fill="{A}" filter="url(#gl)"><animateMotion path="{route(via)}" dur="9s" begin="{k*3}s" repeatCount="indefinite"/></circle>')
-    nd = []
-    for i, (x, y, t, hot) in enumerate(nodes):
-        fill = A if t == "SALE" else BG
-        nd.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh}" rx="4" fill="{fill}" stroke="{A}" stroke-opacity="0.5"><animate attributeName="stroke-opacity" values="0.35;1;0.35" dur="3s" begin="{i*0.3:.1f}s" repeatCount="indefinite"/></rect>')
-        nd.append(T(t, x + bw / 2, y + 29, 15, BG if t == "SALE" else A, 700, anchor="middle"))
-    return card(w, h, "".join(e) + "".join(pk) + flicker("".join(nd)), "system map: " + " to ".join(top + bot).lower())
-
-def project(D):
-    P = CFG["project"]; w, h = 1200, 300
-    b = [flicker(T(f"PROJECT #{P['number']}", 40, 70, 44, A, 800))]
-    rows = [("STATUS", P.get("status") or "ACTIVE"), ("TYPE", P.get("type") or ""), ("OBJECTIVE", P.get("objective")), ("PHASE", P.get("phase") or "IN PROGRESS")]
-    for i, (k, v) in enumerate(rows):
-        y = 122 + i * 34
-        b.append(T(k, 42, y, 13, DIM, 500))
-        if v is None:
-            b.append(f'<rect x="190" y="{y-15}" width="230" height="20" fill="{A}" opacity="0.9"><animate attributeName="opacity" values="0.9;0.55;0.9" dur="2s" repeatCount="indefinite"/></rect>' + T("REDACTED", 196, y, 12, BG, 700))
-        else:
-            b.append(T(v, 190, y, 16, A, 700))
-    b.append(f'<circle cx="{190+W(rows[0][1],16,700)+14:.0f}" cy="117" r="5" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.15;1" dur="1.2s" repeatCount="indefinite"/></circle>')
-    y = 262; b.append(f'<rect x="42" y="{y-12}" width="460" height="14" fill="{PANEL}" stroke="{DARK}"/>')
-    if P.get("progress") is not None:
-        pw = 460 * float(P["progress"]) / 100
-        b.append(f'<rect x="42" y="{y-12}" width="0" height="14" fill="{A}" filter="url(#gl)"><animate attributeName="width" values="0;{pw:.0f};{pw:.0f}" keyTimes="0;0.3;1" dur="6s" repeatCount="indefinite"/></rect>' + T(f"{P['progress']}%", 516, y, 13, A, 700))
-    else:
-        b.append(f'<rect x="42" y="{y-12}" width="90" height="14" fill="{A}" filter="url(#gl)"><animate attributeName="x" values="42;412;42" dur="3s" repeatCount="indefinite"/></rect>' + T("BUILDING", 516, y, 13, A, 700))
-    # narrative, typed in sequence
-    story = P.get("story", []); extra = []
-    if P.get("now"): extra.append(("NOW", P["now"]))
-    if P.get("next"): extra.append(("NEXT", P["next"]))
-    lines = story + [f"{k}: {v}" for k, v in extra]
-    N = len(lines); cyc = 2 + N * 1.4 + 4
-    b.append(f'<line x1="640" y1="40" x2="640" y2="270" stroke="{DARK}"/>')
-    for i, ln in enumerate(lines):
-        yy = 80 + i * 40; hot = ln.startswith("#")
-        b.append(T(ln, 680, yy, 17, A if hot else MID, 700 if hot else 400))
-        b.append(f'<g opacity="0" filter="url(#gl)">{T(ln, 680, yy, 17, A, 700)}<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.06;0.2;1" dur="{N*1.4:.1f}s" begin="{i*1.4:.1f}s" repeatCount="indefinite"/></g>')
-    return card(w, h, "".join(b), f"project {P['number']}")
-
-def experiments(D):
-    repos = [r for r in D["repos"] if r["name"] not in set(CFG.get("exclude_repos", []))][:10]; w, h = 1200, 70 + 30 * len(repos)
-    now = dt.datetime.now(dt.timezone.utc); total = D["repo_count"]
-    b = [T("ID", 40, 40, 12, DIM, 500), T("EXPERIMENT", 140, 40, 12, DIM, 500), T("NOTE", 520, 40, 12, DIM, 500), T("STATUS", 1060, 40, 12, DIM, 500)]
-    cyc = 2 + len(repos) * 0.5 + 6
-    for i, r in enumerate(repos):
-        y = 76 + i * 30
-        age = (now - dt.datetime.fromisoformat(r["pushedAt"].replace("Z", "+00:00"))).days
-        st = "SHIPPED" if r.get("homepageUrl") else ("ACTIVE" if age <= 14 else "PARKED")
-        col = A if st != "PARKED" else DIM
-        line = (T(f"E-{total - i:03d}", 40, y, 14, DIM, 500) + T(r["name"].upper()[:28], 140, y, 15, A, 700) +
-                T((r.get("description") or "-")[:52].lower(), 520, y, 14, MID, 400) + T(st, 1060, y, 14, col, 700))
-        b.append(f'<g>{line}<animate attributeName="opacity" values="1;0.15;1;1" keyTimes="0;0.04;0.1;1" dur="{cyc:.1f}s" begin="{i*0.35:.2f}s" repeatCount="indefinite"/></g>')
-        b.append(f'<rect x="30" y="{y-19}" width="1140" height="26" fill="{A}" opacity="0"><animate attributeName="opacity" values="0;0.12;0;0" keyTimes="0;0.03;0.1;1" dur="{cyc:.1f}s" begin="{i*0.35:.2f}s" repeatCount="indefinite"/></rect>')
-        if st == "ACTIVE":
-            b.append(f'<circle cx="1146" cy="{y-5}" r="4" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.1;1" dur="1s" repeatCount="indefinite"/></circle>')
-    return card(w, h, flicker("".join(b)), "experiments log")
-
-def field_notes():
-    notes = CFG["field_notes"]; w, h = 1200, 190; per = 6; cyc = per * len(notes)
-    b = []
-    for i, nte in enumerate(notes):
-        g = T(f"FIELD NOTE / {nte['n']}", 40, 44, 13, DIM, 600) + T(nte["date"], 1160, 44, 13, DIM, 500, anchor="end")
-        g += "".join(T(t, 40, 96 + j * 40, 26, A, 700) for j, t in enumerate(nte["text"]))
-        s0 = i / len(notes); s1 = (i + 1) / len(notes); f = 0.4 / cyc
-        kt = f"0;{s0:.4f};{s0+f:.4f};{s1-f:.4f};{s1:.4f};1" if i else f"0;{s1-f:.4f};{s1:.4f};{1-f:.4f};1"
-        vals = "0;0;1;1;0;0" if i else "1;1;0;0;1"
-        b.append(f'<g opacity="{0 if i else 1}">{g}<animate attributeName="opacity" keyTimes="{kt}" values="{vals}" dur="{cyc}s" repeatCount="indefinite"/></g>')
-    for i in range(len(notes)):
-        b.append(f'<rect x="{40+i*28}" y="170" width="20" height="4" fill="{DARK}"/><rect x="{40+i*28}" y="170" width="20" height="4" fill="{A}" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{i/len(notes)+0.0001:.4f};{(i+1)/len(notes)-0.0001:.4f};{(i+1)/len(notes):.4f};1" calcMode="discrete" dur="{cyc}s" repeatCount="indefinite"/></rect>')
-    return card(w, h, flicker("".join(b)), "field notes")
+    return card(w, h, top + "".join(cells) + scan, "system heartbeat", beam)
 
 def footer():
-    L = CFG["operator_loop"]; w, h = 1200, 150
-    widths = [W(t, 17, 700) for t in L]; arrow = 44; total = sum(widths) + arrow * (len(L) - 1)
-    x = (w - total) / 2; b = []; n = len(L)
-    for i, t in enumerate(L):
-        b.append(T(t, x, 62, 17, DIM, 700))
-        b.append(f'<g opacity="0">{T(t, x, 62, 17, A, 800)}<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.05;{1/n:.3f};1" dur="{n*0.9:.1f}s" begin="{i*0.9:.1f}s" repeatCount="indefinite"/></g>')
-        x += widths[i]
-        if i < n - 1: b.append(T("->", x + 10, 62, 17, DARK, 700)); x += arrow
-    ps = CFG["principles"]
-    b.append(T("   /   ".join(f"{a.lower()} > {c.lower()}" for a, c in ps), 600, 112, 13, DIM, 500, anchor="middle"))
-    return card(w, h, "".join(b), "operator loop")
-
-def tile(title, line, tag, meta, idx):
-    w, h = 580, 150
-    b = [T(tag, 24, 34, 12, BG, 700, extra="")]
-    tw = W(tag, 12, 700) + 16
-    b.insert(0, f'<rect x="18" y="20" width="{tw:.0f}" height="20" rx="3" fill="{A}"/>')
-    b.append(f'<circle cx="548" cy="30" r="5" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.2;1" dur="1.6s" begin="{idx*0.3:.1f}s" repeatCount="indefinite"/></circle>')
-    b.append(flicker(T(title[:30], 24, 82, 28, A, 700), 3 + idx * 0.4))
-    b.append(T(line[:62], 24, 112, 14, MID, 400))
-    b.append(T(meta[:64], 24, 136, 12, DIM, 400))
-    return card(w, h, "".join(b), title, roll=4 + idx % 3)
-
+    ps = CFG["principles"]; w, h = 1200, 130
+    b = []
+    for i, (a, bb) in enumerate(ps):
+        x = 32 + (i % 2) * 590; y = 48 + (i // 2) * 44
+        b.append(T(a, x, y, 22, A, 800) + T(">", x + 250, y, 22, MID, 700) + T(bb, x + 290, y, 22, DIM, 500))
+    b.append(T("open to conversations on call-centre automation, lead-gen infrastructure and AI in regulated financial services", 600, 120, 12, DIM, 400, anchor="middle"))
+    return card(w, h, flicker("".join(b)), "principles")
 
 # ---------------- run ----------------
+SECTIONS = [("opmodel", "OPERATING_MODEL", "attention to cash"), ("loop", "THE_LOOP", "why an operator builds"),
+            ("evidence", "EVIDENCE", "systems in production"), ("project", "PROJECT_#" , "current chapter"),
+            ("experiments", "EXPERIMENTS", "this is a lab, not a showroom"), ("notes", "FIELD_NOTES", "observations from operating"),
+            ("heartbeat", "SYSTEM_HEARTBEAT", "raw telemetry")]
 def main():
     os.makedirs(OUT, exist_ok=True)
-    D = fetch()
-    files = {"header.svg": header(D), "system-map.svg": system_map(), "project.svg": project(D), "experiments.svg": experiments(D),
-             "field-notes.svg": field_notes(), "activity.svg": activity(D), "footer.svg": footer()}
-    for s in ["THE_LOOP", "PROOF", f"PROJECT_{CFG['project']['number']}", "EXPERIMENTS", "FIELD_NOTES", "HEARTBEAT"]:
-        files[f"h-{s.lower()}.svg"] = section(s)
-    ven = list(CFG["ventures"])
-    if len(ven) % 2 and CFG.get("filler"): ven.append(CFG["filler"])
-    for i, v in enumerate(ven):
-        files[f"venture-{i}.svg"] = tile(v["name"], v["line"], v["tag"], v["url"].replace("https://", ""), i)
-    keep = set(files) | {"manifest.json"}
     for f in os.listdir(OUT):
-        if f not in keep: os.remove(os.path.join(OUT, f))
+        if f.endswith(".svg"): os.remove(os.path.join(OUT, f))
+    D = fetch()
+    files = {"header.svg": header(D), "opmodel.svg": opmodel(), "loop.svg": loop(), "evidence.svg": evidence(D), "project.svg": project(D),
+             "experiments.svg": experiments(D), "notes.svg": field_notes(), "heartbeat.svg": activity(D), "footer.svg": footer()}
+    for key, lab, sub in SECTIONS:
+        files[f"h-{key}.svg"] = section(lab + (CFG["project"]["number"] if lab.endswith("#") else ""), sub)
     for n, s in files.items(): open(os.path.join(OUT, n), "w").write(s)
     json.dump({"updated": dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(timespec="minutes") + "Z"}, open(os.path.join(OUT, "manifest.json"), "w"))
-    write_readme(ven)
+    write_readme()
 
-def write_readme(vens):
-    def pair(items):
-        rows = []
-        for i in range(0, len(items), 2):
-            cells = "".join(f'<td width="50%"><a href="{u}"><img src="{src}" width="100%" alt="{alt}"></a></td>' for src, u, alt in items[i:i+2])
-            rows.append(f"<tr>{cells}</tr>")
-        return "<table>" + "".join(rows) + "</table>"
+def write_readme():
     b = lambda l, logo, url: f'<a href="{url}"><img src="https://img.shields.io/badge/{l.replace(" ","%20")}-0b0805?style=for-the-badge&logo={logo}&logoColor=ffb000&labelColor=0b0805&color=0b0805" alt="{l}"></a>'
+    sm = lambda l, url: f'<a href="{url}"><img src="https://img.shields.io/badge/{l.replace(" ","%20").replace("-","--")}-0b0805?style=flat-square&labelColor=0b0805&color=0b0805&logoColor=ffb000" alt="{l}"></a>'
     img = lambda f, alt: f'<img src="generated/{f}" width="100%" alt="{alt}">'
-    pn = CFG["project"]["number"]
-    ven = pair([(f"generated/venture-{i}.svg", v["url"], v["name"]) for i, v in enumerate(vens)])
-    md = f"""<div align="center">
-
-{img("header.svg", CFG['name'] + ", revenue infrastructure engineer. Systems between attention and cash.")}
-
-{b("Email","gmail","mailto:franz@sigsolutions.co.za")} {b("SIG Solutions","googlechrome","https://sigsolutions.co.za")} {b("LinkedIn","linkedin","https://linkedin.com/in/franzbadenhorst")} {b("@FranzSalesSense","x","https://x.com/FranzSalesSense")}
-
-{img("h-the_loop.svg", "the loop")}
-{img("system-map.svg", "Attention to Meta ads to lead to CRM to dialler to AI or human to sale to collection to data, feeding back to attention")}
-
-{img("h-proof.svg", "proof")}
-
-{ven}
-
-{img(f"h-project_{pn}.svg", "project " + pn)}
-{img("project.svg", "project " + pn)}
-
-{img("h-experiments.svg", "experiments")}
-<a href="https://github.com/{CFG['login']}?tab=repositories">{img("experiments.svg", "experiments log")}</a>
-
-{img("h-field_notes.svg", "field notes")}
-{img("field-notes.svg", "field notes")}
-
-{img("h-heartbeat.svg", "heartbeat")}
-{img("activity.svg", "contribution heartbeat")}
-
-{img("footer.svg", "operate, bottleneck, build, automate, operate")}
-
-</div>
-"""
+    parts = [img("header.svg", f"{CFG['name']}, revenue infrastructure engineer. {CFG['thesis']}"), "",
+             " ".join([b("Email", "gmail", "mailto:franz@sigsolutions.co.za"), b("SIG Solutions", "googlechrome", "https://sigsolutions.co.za"),
+                       b("LinkedIn", "linkedin", "https://linkedin.com/in/franzbadenhorst"), b("@FranzSalesSense", "x", "https://x.com/FranzSalesSense")]), ""]
+    alts = {"opmodel": "operating model", "loop": "the loop", "evidence": "evidence", "project": f"project {CFG['project']['number']}",
+            "experiments": "experiments", "notes": "field notes", "heartbeat": "system heartbeat"}
+    for key, lab, sub in SECTIONS:
+        parts += [img(f"h-{key}.svg", lab.lower()), img(f"{key}.svg", alts[key])]
+        if key == "evidence":
+            parts += ["", " ".join(sm(e["name"].title(), e["url"]) for e in CFG["evidence"])]
+        parts.append("")
+    parts.append(img("footer.svg", "principles"))
+    md = '<div align="center">\n\n' + "\n".join(parts) + "\n\n</div>\n"
     open(os.path.join(ROOT, "README.md"), "w").write(md)
 
 if __name__ == "__main__":

@@ -69,7 +69,7 @@ def odometer(value, x, y, size=36, period=10, delay=0):
         d = int(ch); loops = 2 + (len(s) - i) % 3; total = loops * 10 + d
         strip = "".join(T(str(k % 10), 0, k * h, size, A, 700) for k in range(total + 1))
         cid = uid("od"); land = 0.18 + 0.04 * i
-        out.append(f'<clipPath id="{cid}"><rect x="{cx:.1f}" y="{y-size:.1f}" width="{dw:.1f}" height="{h:.1f}"/></clipPath><g clip-path="url(#{cid})"><g transform="translate({cx:.1f},{y})"><g>{strip}'
+        out.append(f'<clipPath id="{cid}"><rect x="{cx:.1f}" y="{y-size:.1f}" width="{dw:.1f}" height="{h:.1f}"/></clipPath><g clip-path="url(#{cid})"><g transform="translate({cx:.1f},{y})"><g transform="translate(0,{-total*h:.1f})">{strip}'
                    f'<animateTransform attributeName="transform" type="translate" values="0,0;0,{-total*h:.1f};0,{-total*h:.1f}" keyTimes="0;{land:.2f};1" calcMode="spline" keySplines="0.15 0.6 0.3 1;0 0 1 1" dur="{period}s" begin="{delay:.2f}s" repeatCount="indefinite"/></g></g></g>')
         cx += dw
     return "".join(out), cx - x
@@ -131,9 +131,9 @@ def header(D):
     b.append(T(CFG["tagline"].upper(), 58, 164, 18, MID, 500))
     th, tw = text(CFG["thesis"], 58, 222, 22, A, 600)
     cid = uid("th")
-    b.append(f'<clipPath id="{cid}"><rect x="56" y="196" height="36" width="0"><animate attributeName="width" values="0;{tw+4:.0f};{tw+4:.0f};0" keyTimes="0;0.35;0.9;1" dur="9s" repeatCount="indefinite"/></rect></clipPath>')
+    b.append(f'<clipPath id="{cid}"><rect x="56" y="196" height="36" width="{tw+4:.0f}"><animate attributeName="width" values="0;{tw+4:.0f};{tw+4:.0f};0" keyTimes="0;0.35;0.9;1" dur="9s" repeatCount="indefinite"/></rect></clipPath>')
     b.append(f'<g clip-path="url(#{cid})" filter="url(#gl)">{th}</g>')
-    b.append(f'<rect y="203" width="12" height="24" fill="{A}" filter="url(#gl)"><animate attributeName="x" values="58;{58+tw+6:.0f};{58+tw+6:.0f};58" keyTimes="0;0.35;0.9;1" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" calcMode="discrete" dur="0.9s" repeatCount="indefinite"/></rect>')
+    b.append(f'<rect x="{58+tw+6:.0f}" y="203" width="12" height="24" fill="{A}" filter="url(#gl)"><animate attributeName="x" values="58;{58+tw+6:.0f};{58+tw+6:.0f};58" keyTimes="0;0.35;0.9;1" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" calcMode="discrete" dur="0.9s" repeatCount="indefinite"/></rect>')
     x = 58
     for i, (lab, val) in enumerate([("CONTRIBUTIONS", D["alltime"]), ("REPOSITORIES", D["repo_count"]), ("LIVE BUILDS", len(live))] + ([(CFG.get("users_label", "USERS"), int(CFG["users"]))] if CFG.get("users") else [])):
         b.append(T(lab, x, 300, 12, DIM, 500)); od, ow = odometer(val, x, 346, 34, delay=i * 0.35); b.append(flicker(od)); x += max(170, ow + 50)
@@ -194,7 +194,7 @@ def loop():
         if not line: continue
         yy = 104 + i * 32; big = i >= 3
         seg = T(line, 600, yy, 22 if big else 18, A if big else MID, 700 if big else 400)
-        b.append(f'<g opacity="0">{seg}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.1:.2f};{i*0.1+0.04:.2f};0.92;1" dur="12s" repeatCount="indefinite"/></g>')
+        b.append(f'<g>{seg}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.1:.2f};{i*0.1+0.04:.2f};0.92;1" dur="12s" repeatCount="indefinite"/></g>')
     return card(w, h, "".join(b), "the loop: " + " to ".join(L["nodes"]).lower())
 
 def evidence(D):
@@ -204,7 +204,7 @@ def evidence(D):
         yy = 84 + i * 44
         row = (f'<rect x="32" y="{yy-18}" width="{W(e["tag"],12,700)+16:.0f}" height="22" rx="3" fill="{A}"/>' + T(e["tag"], 40, yy - 2, 12, BG, 700)
                + T(e["name"], 150, yy, 20, A, 800) + T(e["line"], 520, yy, 15, MID, 400) + T(e["url"].replace("https://", ""), 1168, yy, 12, DIM, 400, anchor="end"))
-        b.append(f'<g opacity="0">{row}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.06:.2f};{i*0.06+0.02:.2f};0.94;1" dur="14s" repeatCount="indefinite"/></g>')
+        b.append(f'<g>{row}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.06:.2f};{i*0.06+0.02:.2f};0.94;1" dur="14s" repeatCount="indefinite"/></g>')
     return card(w, h, flicker("".join(b)), "evidence: " + ", ".join(e["name"].lower() for e in E))
 
 def project(D):
@@ -224,7 +224,7 @@ def project(D):
     for i, line in enumerate(P["story"]):
         last_line = i == len(P["story"]) - 1
         seg = T(line, 790, 96 + i * 36, 20 if last_line else 16, A if last_line else MID, 800 if last_line else 400)
-        b.append(f'<g opacity="0">{seg}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.09:.2f};{i*0.09+0.03:.2f};0.93;1" dur="12s" repeatCount="indefinite"/></g>')
+        b.append(f'<g>{seg}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.09:.2f};{i*0.09+0.03:.2f};0.93;1" dur="12s" repeatCount="indefinite"/></g>')
     return card(w, h, "".join(b), f"project {P['number']}: {P['objective']}")
 
 def experiments(D):
@@ -246,7 +246,7 @@ def experiments(D):
                + T((r.get("description") or "")[:44].lower(), 560, yy, 13, DIM, 400) + T(st, 1168, yy, 14, A if hot else DIM, 800 if hot else 500, anchor="end"))
         if st == "ACTIVE":
             row += f'<circle cx="{1168-W(st,14,800)-14:.0f}" cy="{yy-5}" r="4" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.1;1" dur="1s" begin="{i*0.2:.1f}s" repeatCount="indefinite"/></circle>'
-        b.append(f'<g opacity="0">{row}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.05:.2f};{i*0.05+0.015:.3f};0.95;1" dur="16s" repeatCount="indefinite"/></g>')
+        b.append(f'<g>{row}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{i*0.05:.2f};{i*0.05+0.015:.3f};0.95;1" dur="16s" repeatCount="indefinite"/></g>')
     return card(w, h, flicker("".join(b)), "experiments")
 
 def field_notes():
@@ -259,7 +259,7 @@ def field_notes():
             g += T(line, 40, 104 + j * 42, 28 if j == len(n["lines"]) - 1 else 22, A if j == len(n["lines"]) - 1 else MID, 800 if j == len(n["lines"]) - 1 else 500)
         kt = f"0;{s0:.3f};{s0+0.02:.3f};{s1-0.02:.3f};{s1:.3f};1" if i else f"0;0.02;{s1-0.02:.3f};{s1:.3f};1"
         vals = "0;0;1;1;0;0" if i else "0;1;1;0;0"
-        b.append(f'<g opacity="0">{g}<animate attributeName="opacity" keyTimes="{kt}" values="{vals}" dur="{tot}s" repeatCount="indefinite"/></g>')
+        b.append(f'<g opacity="{0 if i else 1}">{g}<animate attributeName="opacity" keyTimes="{kt}" values="{vals}" dur="{tot}s" repeatCount="indefinite"/></g>')
     for i in range(len(N)):
         b.append(f'<rect x="{40+i*28}" y="176" width="20" height="4" fill="{DARK}"/><rect x="{40+i*28}" y="176" width="20" height="4" fill="{A}" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{i/len(N):.3f};{i/len(N)+0.001:.3f};{(i+1)/len(N)-0.001:.3f};{(i+1)/len(N):.3f};1" dur="{tot}s" repeatCount="indefinite"/></rect>')
     return card(w, h, flicker("".join(b)), "field notes")

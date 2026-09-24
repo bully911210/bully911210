@@ -243,12 +243,13 @@ def project(D):
     N = len(lines); cyc = 2 + N * 1.4 + 4
     b.append(f'<line x1="640" y1="40" x2="640" y2="270" stroke="{DARK}"/>')
     for i, ln in enumerate(lines):
-        yy = 80 + i * 40; t0 = (1 + i * 1.4) / cyc
-        b.append(f'<g opacity="0">{T(ln, 680, yy, 17, A if ln.startswith("#") else MID, 700 if ln.startswith("#") else 400)}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{t0:.3f};{t0+0.02:.3f};0.95;1" dur="{cyc:.1f}s" repeatCount="indefinite"/></g>')
+        yy = 80 + i * 40; hot = ln.startswith("#")
+        b.append(T(ln, 680, yy, 17, A if hot else MID, 700 if hot else 400))
+        b.append(f'<g opacity="0" filter="url(#gl)">{T(ln, 680, yy, 17, A, 700)}<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.06;0.2;1" dur="{N*1.4:.1f}s" begin="{i*1.4:.1f}s" repeatCount="indefinite"/></g>')
     return card(w, h, "".join(b), f"project {P['number']}")
 
 def experiments(D):
-    repos = D["repos"][:10]; w, h = 1200, 70 + 30 * len(repos)
+    repos = [r for r in D["repos"] if r["name"] not in set(CFG.get("exclude_repos", []))][:10]; w, h = 1200, 70 + 30 * len(repos)
     now = dt.datetime.now(dt.timezone.utc); total = D["repo_count"]
     b = [T("ID", 40, 40, 12, DIM, 500), T("EXPERIMENT", 140, 40, 12, DIM, 500), T("NOTE", 520, 40, 12, DIM, 500), T("STATUS", 1060, 40, 12, DIM, 500)]
     cyc = 2 + len(repos) * 0.5 + 6
@@ -259,8 +260,8 @@ def experiments(D):
         col = A if st != "PARKED" else DIM
         line = (T(f"E-{total - i:03d}", 40, y, 14, DIM, 500) + T(r["name"].upper()[:28], 140, y, 15, A, 700) +
                 T((r.get("description") or "-")[:52].lower(), 520, y, 14, MID, 400) + T(st, 1060, y, 14, col, 700))
-        t0 = (1 + i * 0.5) / cyc
-        b.append(f'<g opacity="0">{line}<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{t0:.3f};{t0+0.01:.3f};0.96;1" dur="{cyc:.1f}s" repeatCount="indefinite"/></g>')
+        b.append(f'<g>{line}<animate attributeName="opacity" values="1;0.15;1;1" keyTimes="0;0.04;0.1;1" dur="{cyc:.1f}s" begin="{i*0.35:.2f}s" repeatCount="indefinite"/></g>')
+        b.append(f'<rect x="30" y="{y-19}" width="1140" height="26" fill="{A}" opacity="0"><animate attributeName="opacity" values="0;0.12;0;0" keyTimes="0;0.03;0.1;1" dur="{cyc:.1f}s" begin="{i*0.35:.2f}s" repeatCount="indefinite"/></rect>')
         if st == "ACTIVE":
             b.append(f'<circle cx="1146" cy="{y-5}" r="4" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.1;1" dur="1s" repeatCount="indefinite"/></circle>')
     return card(w, h, flicker("".join(b)), "experiments log")
@@ -272,9 +273,9 @@ def field_notes():
         g = T(f"FIELD NOTE / {nte['n']}", 40, 44, 13, DIM, 600) + T(nte["date"], 1160, 44, 13, DIM, 500, anchor="end")
         g += "".join(T(t, 40, 96 + j * 40, 26, A, 700) for j, t in enumerate(nte["text"]))
         s0 = i / len(notes); s1 = (i + 1) / len(notes); f = 0.4 / cyc
-        kt = f"0;{s0:.4f};{s0+f:.4f};{s1-f:.4f};{s1:.4f};1" if i else f"0;{f:.4f};{s1-f:.4f};{s1:.4f};1"
-        vals = "0;0;1;1;0;0" if i else "0;1;1;0;0"
-        b.append(f'<g opacity="0">{g}<animate attributeName="opacity" keyTimes="{kt}" values="{vals}" dur="{cyc}s" repeatCount="indefinite"/></g>')
+        kt = f"0;{s0:.4f};{s0+f:.4f};{s1-f:.4f};{s1:.4f};1" if i else f"0;{s1-f:.4f};{s1:.4f};{1-f:.4f};1"
+        vals = "0;0;1;1;0;0" if i else "1;1;0;0;1"
+        b.append(f'<g opacity="{0 if i else 1}">{g}<animate attributeName="opacity" keyTimes="{kt}" values="{vals}" dur="{cyc}s" repeatCount="indefinite"/></g>')
     for i in range(len(notes)):
         b.append(f'<rect x="{40+i*28}" y="170" width="20" height="4" fill="{DARK}"/><rect x="{40+i*28}" y="170" width="20" height="4" fill="{A}" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{i/len(notes)+0.0001:.4f};{(i+1)/len(notes)-0.0001:.4f};{(i+1)/len(notes):.4f};1" calcMode="discrete" dur="{cyc}s" repeatCount="indefinite"/></rect>')
     return card(w, h, flicker("".join(b)), "field notes")

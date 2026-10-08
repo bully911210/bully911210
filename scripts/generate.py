@@ -285,6 +285,35 @@ def activity(D):
     top = "".join(T(lab, 40 + i * 290, 30, 12, DIM, 500) + flicker(T(v, 40 + i * 290, 58, 24, A, 700)) for i, (lab, v) in enumerate(stats))
     return card(w, h, top + "".join(cells) + scan, "system heartbeat", beam)
 
+def featured():
+    F = CFG["featured"]; w, h = 1200, 340
+    vw = W(F["version"], 13, 800) + 20
+    b = [f'<rect x="40" y="34" width="{vw:.0f}" height="26" rx="3" fill="{A}" filter="url(#gl)"/>' + T(F["version"], 50, 52, 13, BG, 800)
+         + T(F["tags"], 40 + vw + 16, 52, 13, DIM, 700)]
+    b.append(flicker(T(F["name"], 38, 128, 64, A, 800)))
+    b.append(T(F["line"], 40, 168, 18, MID, 500))
+    for i, (k, v) in enumerate(F["specs"]):
+        x = 40 + (i % 3) * 210; y = 214 + (i // 3) * 46
+        b.append(T(k, x, y, 11, DIM, 700) + T(v, x, y + 22, 17, A, 800))
+    ch, cw = text(F["cmd"], 40, 314, 14, MID, 500)
+    cid = uid("cmd")
+    b.append(f'<clipPath id="{cid}"><rect x="38" y="296" height="26" width="{cw+4:.0f}"><animate attributeName="width" values="0;{cw+4:.0f};{cw+4:.0f};0" keyTimes="0;0.3;0.92;1" dur="8s" repeatCount="indefinite"/></rect></clipPath><g clip-path="url(#{cid})">{ch}</g>')
+    b.append(f'<rect x="{40+cw+6:.0f}" y="300" width="9" height="17" fill="{A}" filter="url(#gl)"><animate attributeName="x" values="40;{40+cw+6:.0f};{40+cw+6:.0f};40" keyTimes="0;0.3;0.92;1" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" calcMode="discrete" dur="0.9s" repeatCount="indefinite"/></rect>')
+    px, py, pw, ph = 700, 34, 460, 280
+    b.append(f'<rect x="{px}" y="{py}" width="{pw}" height="{ph}" rx="6" fill="{PANEL}" stroke="{DARK}"/>')
+    b.append(T("SIGNAL PATH", px + 20, py + 30, 13, DIM, 700) + f'<line x1="{px+20}" y1="{py+44}" x2="{px+pw-20}" y2="{py+44}" stroke="{DARK}"/>')
+    bw, bh, by = 110, 50, py + 72; xs = [px + 20, px + 175, px + 330]
+    for i, lab in enumerate(["YOUR PC", "HOME WI-FI", "ANY TV"]):
+        b.append(box(xs[i], by, bw, bh, lab, fill=A if i == 2 else None, delay=i * 0.5, size=13))
+    for i in range(2):
+        x1, x2, yy = xs[i] + bw, xs[i + 1], by + bh / 2
+        d = f"M{x1},{yy} L{x2},{yy}"; b.append(dash(d) + packets(d, n=2, dur=1.6, r=4))
+    for i, (k, v) in enumerate(F["modes"]):
+        yy = py + 178 + i * 32
+        b.append(T(k, px + 20, yy, 12, DIM, 700) + T(v, px + 160, yy, 14, A, 700))
+    b.append(f'<circle cx="{px+pw-30}" cy="{py+25}" r="5" fill="{A}" filter="url(#gl)"><animate attributeName="opacity" values="1;0.15;1" dur="1.2s" repeatCount="indefinite"/></circle>' + T("LIVE", px + pw - 42, py + 30, 12, A, 800, anchor="end"))
+    return card(w, h, "".join(b), f"HomeCast {F['version']}: {F['line']}")
+
 def footer():
     ps = CFG["principles"]; w, h = 1200, 130
     b = []
@@ -306,6 +335,8 @@ def main():
     D = fetch()
     files = {"header.svg": header(D), "opmodel.svg": opmodel(), "loop.svg": loop(), "evidence.svg": evidence(D), "project.svg": project(D),
              "experiments.svg": experiments(D), "notes.svg": field_notes(), "heartbeat.svg": activity(D), "footer.svg": footer()}
+    if CFG.get("featured"):
+        files["featured.svg"] = featured(); files["h-featured.svg"] = section("NOW_SHIPPING", "open source, free download")
     for key, lab, sub in SECTIONS:
         files[f"h-{key}.svg"] = section(lab + (CFG["project"]["number"] if lab.endswith("#") else ""), sub)
     for n, s in files.items(): open(os.path.join(OUT, n), "w").write(s)
@@ -319,6 +350,14 @@ def write_readme():
     parts = [img("header.svg", f"{CFG['name']}, revenue infrastructure engineer. {CFG['thesis']}"), "",
              " ".join([b("Email", "gmail", "mailto:franz@sigsolutions.co.za"), b("SIG Solutions", "googlechrome", "https://sigsolutions.co.za"),
                        b("LinkedIn", "linkedin", "https://linkedin.com/in/franzbadenhorst"), b("@FranzSalesSense", "x", "https://x.com/FranzSalesSense")]), ""]
+    F = CFG.get("featured")
+    if F:
+        cta = lambda l, logo, url, bg, fg: f'<a href="{url}"><img src="https://img.shields.io/badge/{l.replace(" ","%20")}-{bg}?style=for-the-badge&logo={logo}&logoColor={fg}&labelColor={bg}&color={bg}" alt="{l}" height="36"></a>'
+        parts += [img("h-featured.svg", "now_shipping"),
+                  f'<a href="{F["repo"]}">{img("featured.svg", "HomeCast: " + F["line"])}</a>', "",
+                  f'<a href="{F["repo"]}"><img src="{F["demo"]}" width="100%" alt="HomeCast demo: browsing and playing with a TV remote"></a>', "",
+                  " ".join([cta("Download for Windows", "windows", F["download"], "ffb000", "0b0805"),
+                            cta("View HomeCast on GitHub", "github", F["repo"], "0b0805", "ffb000")]), ""]
     alts = {"opmodel": "operating model", "loop": "the loop", "evidence": "evidence", "project": f"project {CFG['project']['number']}",
             "experiments": "experiments", "notes": "field notes", "heartbeat": "system heartbeat"}
     for key, lab, sub in SECTIONS:

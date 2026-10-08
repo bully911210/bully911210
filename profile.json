@@ -177,5 +177,55 @@
       "label": "LicenceReady"
     }
   ],
-  "experiment_status": {}
+  "experiment_status": {},
+  "featured": {
+    "name": "HOMECAST",
+    "version": "v0.1.0",
+    "tags": "OSS  /  MIT  /  WINDOWS",
+    "line": "Your PC's movies, music and photos on any TV browser.",
+    "specs": [
+      [
+        "BINARY",
+        "1 EXE"
+      ],
+      [
+        "CLOUD",
+        "NONE"
+      ],
+      [
+        "ACCOUNTS",
+        "NONE"
+      ],
+      [
+        "TV CLIENT",
+        "9.3 KB"
+      ],
+      [
+        "RUNTIME DEPS",
+        "6"
+      ],
+      [
+        "PAIRING",
+        "6-DIGIT PIN"
+      ]
+    ],
+    "cmd": "$ unzip HomeCast-win-x64.zip && homecast.exe",
+    "modes": [
+      [
+        "DIRECT PLAY",
+        "mp4  webm"
+      ],
+      [
+        "CONVERT",
+        "mkv  hevc  av1  dts"
+      ],
+      [
+        "ENCODE",
+        "nvenc  qsv  amf"
+      ]
+    ],
+    "repo": "https://github.com/bully911210/homecast",
+    "download": "https://github.com/bully911210/homecast/releases/latest/download/HomeCast-win-x64.zip",
+    "demo": "https://raw.githubusercontent.com/bully911210/homecast/main/docs/media/demo.gif"
+  }
 }

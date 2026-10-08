@@ -145,37 +145,36 @@
       "name": "SIG SOLUTIONS",
       "line": "50+ seat outbound operation",
       "tag": "BPO",
-      "url": "https://sigsolutions.co.za"
+      "url": "https://sigsolutions.co.za",
+      "label": "SIG Solutions"
     },
     {
       "name": "ACORN BROKERS",
       "line": "insurance distribution",
       "tag": "FSP",
-      "url": "https://acornbrokers.co.za"
+      "url": "https://acornbrokers.co.za",
+      "label": "Acorn Brokers"
     },
     {
       "name": "CIVIL SOCIETY SA",
       "line": "digital acquisition + advocacy",
       "tag": "NGO",
-      "url": "https://civilsocietysouthafrica.co.za"
+      "url": "https://civilsocietysouthafrica.co.za",
+      "label": "Civil Society SA"
     },
     {
       "name": "STACKED MARKETING",
       "line": "performance infrastructure",
       "tag": "AGENCY",
-      "url": "https://stackedmarketing.co.za"
+      "url": "https://stackedmarketing.co.za",
+      "label": "Stacked Marketing"
     },
     {
       "name": "LICENCEREADY",
       "line": "firearm motivation letters with local crime data",
       "tag": "SAAS",
-      "url": "https://licenceready.co.za"
-    },
-    {
-      "name": "HOMECAST",
-      "line": "pc media to any tv on home wifi, one exe",
-      "tag": "OSS",
-      "url": "https://github.com/bully911210/homecast"
+      "url": "https://licenceready.co.za",
+      "label": "LicenceReady"
     }
   ],
   "experiment_status": {}

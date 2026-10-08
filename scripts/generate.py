@@ -324,7 +324,7 @@ def write_readme():
     for key, lab, sub in SECTIONS:
         parts += [img(f"h-{key}.svg", lab.lower()), img(f"{key}.svg", alts[key])]
         if key == "evidence":
-            parts += ["", " ".join(sm(e["name"].title(), e["url"]) for e in CFG["evidence"])]
+            parts += ["", " ".join(sm(e.get("label", e["name"].title()), e["url"]) for e in CFG["evidence"])]
         parts.append("")
     parts.append(img("footer.svg", "principles"))
     md = '<div align="center">\n\n' + "\n".join(parts) + "\n\n</div>\n"

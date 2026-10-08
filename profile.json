@@ -227,5 +227,9 @@
     "repo": "https://github.com/bully911210/homecast",
     "download": "https://github.com/bully911210/homecast/releases/latest/download/HomeCast-win-x64.zip",
     "demo": "https://raw.githubusercontent.com/bully911210/homecast/main/docs/media/demo.gif"
-  }
+  },
+  "sections": [
+    "evidence",
+    "experiments"
+  ]
 }

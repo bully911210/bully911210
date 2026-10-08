@@ -337,7 +337,9 @@ def main():
              "experiments.svg": experiments(D), "notes.svg": field_notes(), "heartbeat.svg": activity(D), "footer.svg": footer()}
     if CFG.get("featured"):
         files["featured.svg"] = featured(); files["h-featured.svg"] = section("NOW_SHIPPING", "open source, free download")
-    for key, lab, sub in SECTIONS:
+    on = CFG.get("sections", [k for k, _, _ in SECTIONS])
+    files = {n: v for n, v in files.items() if n.split(".")[0] not in {k for k, _, _ in SECTIONS} - set(on)}
+    for key, lab, sub in [x for x in SECTIONS if x[0] in on]:
         files[f"h-{key}.svg"] = section(lab + (CFG["project"]["number"] if lab.endswith("#") else ""), sub)
     for n, s in files.items(): open(os.path.join(OUT, n), "w").write(s)
     json.dump({"updated": dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(timespec="minutes") + "Z"}, open(os.path.join(OUT, "manifest.json"), "w"))
@@ -360,9 +362,10 @@ def write_readme():
                             cta("View HomeCast on GitHub", "github", F["repo"], "0b0805", "ffb000")]), ""]
     alts = {"opmodel": "operating model", "loop": "the loop", "evidence": "evidence", "project": f"project {CFG['project']['number']}",
             "experiments": "experiments", "notes": "field notes", "heartbeat": "system heartbeat"}
-    for key, lab, sub in SECTIONS:
+    on = CFG.get("sections", [k for k, _, _ in SECTIONS])
+    for key, lab, sub in [x for x in SECTIONS if x[0] in on]:
         parts += [img(f"h-{key}.svg", lab.lower()), img(f"{key}.svg", alts[key])]
-        if key == "evidence":
+        if key == "evidence" and CFG.get("evidence_badges"):
             parts += ["", " ".join(sm(e.get("label", e["name"].title()), e["url"]) for e in CFG["evidence"])]
         parts.append("")
     parts.append(img("footer.svg", "principles"))

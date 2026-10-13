@@ -1,32 +1,57 @@
 name: Refresh profile
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "17 4 * * *" # daily, 06:17 SAST
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ["profile.json", "scripts/**", ".github/workflows/profile.yml"]
+
 permissions:
   contents: write
+
+concurrency:
+  group: profile
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
+      # The stats count private repos too, so the snapshot needs a read-only
+      # fine-grained token (PROFILE_TOKEN: all repositories, Contents + Metadata
+      # read). The default workflow token only sees public repos and would
+      # shrink every number, so without PROFILE_TOKEN the job does nothing.
+      - name: Check for PROFILE_TOKEN
+        id: token
+        run: |
+          if [ -z "${{ secrets.PROFILE_TOKEN }}" ]; then
+            echo "PROFILE_TOKEN is not set; keeping the committed profile as it is."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+        if: steps.token.outputs.ok == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.token.outputs.ok == 'true'
         with:
-          python-version: "3.12"
-      - uses: actions/cache@v4
-        with:
-          path: scripts/.fonts
-          key: fonts-v1
-      - run: pip install fonttools
-      - run: python scripts/generate.py
+          node-version: 22
+          cache: npm
+      - if: steps.token.outputs.ok == 'true'
+        run: npm ci
+      - name: Snapshot GitHub data
+        if: steps.token.outputs.ok == 'true'
+        run: npm run snapshot
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+      - name: Render SVGs and README
+        if: steps.token.outputs.ok == 'true'
+        run: npm run build
+      - name: Commit if anything changed
+        if: steps.token.outputs.ok == 'true'
+        run: |
           git config user.name "profile-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A generated README.md
-          git diff --cached --quiet || git commit -m "Refresh profile stats"
+          git add data v10/generated v10/README.md README.md
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "chore: refresh profile data"
           git push

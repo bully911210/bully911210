@@ -1,0 +1,30 @@
+{
+  "name": "bully911210",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "snapshot": "node lib/snapshot.mjs",
+    "build": "node v10/generate.mjs && node scripts/publish-readme.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "d3-array": "^3.2.4",
+    "d3-contour": "^4.0.2",
+    "d3-delaunay": "^6.0.4",
+    "d3-force": "^3.0.0",
+    "d3-geo": "^3.1.1",
+    "d3-interpolate": "^3.0.1",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "opentype.js": "^2.0.0",
+    "sharp": "^0.35.5",
+    "simplex-noise": "^4.0.3"
+  },
+  "private": true
+}

@@ -1,0 +1,195 @@
+# hero
+Revenue infrastructure engineer · Pretoria
+Franz Badenhorst
+I fix what happens after the lead comes in.
+Most businesses don't have a marketing problem. They have an operational delay problem.
+Operator first. I build the systems a sales floor runs on, from the ad to the dial to the money.
+01 · BUILD THE PIPE
+Six systems I built. One loop.
+01 LEAD LANDS
+Meta Lead Ads webhook
+Every form fill hits a webhook, not an inbox.
+02 STRAIGHT TO DIAL
+Lead to dialler bridge
+Straight into ViciDial.
+03 ON THE CALL
+Speech-to-form
+Fills the record while the agent talks.
+04 CLOSED
+Client apps on Supabase
+Applications, referrals, appointments.
+05 COUNTED
+Read-only web reports
+Synced every minute.
+06 BACK TO THE AD
+Live spend picks the creative
+The loop closes on spend.
+Speed to dial.
+Most lead quality problems are timing problems.
+KEY
+A lead
+The spend signal
+# stack
+03 · FULL STACK, LITERALLY
+Every layer, counted from the repos.
+93 repositories, 43 of them private. Each tower is a technology; its height is the number of repos that depend on it. One floor line is five repos.
+INTERFACE
+React 58
+Tailwind CSS 55
+Vite 48
+React Hook Form 35
+React Router 35
+Recharts 35
+shadcn/Radix 35
+TanStack Query 35
+Next.js 12
+Framer Motion 11
+Electron 1
+SERVICES
+Zod 39
+Node.js HTTP 13
+SendGrid/Resend 6
+FFmpeg 2
+Flask 1
+DATA
+Supabase 13
+PL/pgSQL 7
+Drizzle/Prisma 2
+PostgreSQL 2
+SQLite 1
+INFRA AND DELIVERY
+ESLint 39
+GitHub Actions 18
+Vercel 12
+Vitest/Jest 4
+Playwright 3
+Docker 1
+AI
+Gemini API 7
+MCP 1
+OpenAI API 1
+THE GROUND
+18.6 MB of source, by language
+TypeScript
+HTML
+Python
+JavaScript
+CSS
+Other
+# projects
+04 · SHIPPED IN PUBLIC
+Open source.
+I give away the working system. Taking it from 1 to 100 is the work you do in your business.
+Open source · TypeScript · v0.3.0
+HomeCast
+Your PC's films, music and photos on any TV in the house.
+Open the TV's browser, pick something, press play. It all stays on your home Wi-Fi.
+One exe
+GPU encoding: NVENC, QSV and AMF.
+9.3 KB TV client
+The whole client, in the TV's browser.
+No cloud, no accounts
+Nothing leaves the house.
+Download for Windows
+Open source · TypeScript · MIT
+claude-code-mods
+Function-hook mods for Claude Code: plan limits, next prompts and docs, built into the interface itself.
+Claude Code · mods enabled
+docs: sync with a1b2c3d
+NEXT STEPS
+Add a test for the retry path
+Update the README
+Check the webhook logs
+Insert 2
+in tick order
+34% 5h  +1.5/min  2h 16m left  58% wk  41% ctx  96% cache
+ok, ship it
+token-ledger
+Plan limits in one row above the prompt. Press ? and Haiku suggests what to ask next.
+next-steps
+Suggested next prompts in a pane. Tick several, insert them in order.
+auto-docs
+A follow-up docs commit keeps the README in step with every commit.
+Try the interactive demo
+nanowall
+Family photos in, a 50-wallpaper Windows desktop carousel out. Nano Banana Pro keeps every face recognisable.
+vsm-for-ai-agents
+Python · Skills and connectors
+YOUR SCREEN
+VSM
+agent
+Extract the table
+Thandi M. Pretoria. Johan V. Centurion. Ayanda K. Midrand. Pieter B. Pretoria.
+Take over
+Monitor · Mini · Hide
+A second screen for your AI agent. It works where you can see it, and you take over with one click.
+Agent skill · Self-tuning
+snipe-loop
+An agent skill that sweeps Facebook Marketplace and AutoTrader for underpriced listings, sends snipe cards to WhatsApp, and tunes its own sweep from how the market grades its picks.
+View the repo
+Sweep. Spot. Send. Learn.
+SNIPE
+Under market
+Seller checks out
+Market grade: buy
+Snipe cards, straight to WhatsApp.
+# receipts
+05 · COUNT THE STOCK
+If it isn't documented, it didn't happen.
+Twelve months of contributions as stock: a pallet per week, a crate per day.
+1,828 contributions, 12 months
+52% of them in private repos
+2,876 commits on default branches
+82 pull requests
+36 new repositories
+Busiest week: N contributions
+Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+# where it runs
+06 · WHERE IT RUNS
+Built for the floor, not the demo.
+FLAGSHIP · OUTBOUND SALES
+SIG Solutions
+sigsolutions.co.za
+An outbound call centre. The sales floor this whole plant was built for.
+Built by operators. Priced like a partner.
+INSURANCE
+Acorn Brokers
+Insurance distribution.
+acornbrokers.co.za
+FIREARM LICENSING
+LicenceReady
+Firearm licence motivation letters, built on local crime data.
+licenceready.co.za
+ADVOCACY
+Civil Society SA
+Digital acquisition and advocacy.
+civilsocietysouthafrica.co.za
+PERFORMANCE
+Stacked Marketing
+Performance infrastructure.
+stackedmarketing.co.za
+# contact
+07 · CONTACT
+Let's talk.
+Revenue systems, dialler integrations, or anything between an ad click and a paid invoice.
+franz@sigsolutions.co.za
+LinkedIn
+@FranzSalesSense
+# README alt text
+Franz Badenhorst, revenue infrastructure engineer, Pretoria. I fix what happens after the lead comes in. Most businesses don't have a marketing problem. They have an operational delay problem. Below, his revenue system drawn as one isometric plant, six systems in one loop: 01 lead lands, a Meta Lead Ads webhook; 02 straight to dial, a lead to dialler bridge into ViciDial; 03 on the call, speech-to-form fills the record while the agent talks; 04 closed, client apps on Supabase; 05 counted, read-only web reports synced every minute; 06 back to the ad, where live spend picks the creative. Leads flow through the pipes; a return pipe carries the spend signal back to the ad.
+02, on the floor. The same loop, played out on a floor plan, an illustration and not live data: leads from ad creatives A, B and C pass the webhook (1) and the dialler (2) and go to the next free desk; desks light when a call connects and speech-to-form fills the record (3); sales go to client apps on Supabase for applications, referrals and appointments (4); the reports board recounts every minute (5); and live spend picks the creative (6).
+Full stack, literally: an isometric city of 93 repositories, 43 of them private. Each tower is a technology and its height is how many repos depend on it. interface: React 58, Tailwind CSS 55, Vite 48, React Hook Form 35, React Router 35, Recharts 35, shadcn/Radix 35, TanStack Query 35, Next.js 12, Framer Motion 11, Electron 1; services: Zod 39, Node.js HTTP 13, SendGrid/Resend 6, FFmpeg 2, Flask 1; data: Supabase 13, PL/pgSQL 7, Drizzle/Prisma 2, PostgreSQL 2, SQLite 1; infra and delivery: ESLint 39, GitHub Actions 18, Vercel 12, Vitest/Jest 4, Playwright 3, Docker 1; ai: Gemini API 7, MCP 1, OpenAI API 1. The city stands on 18.6 MB of code, layered by language.
+04, shipped in public. Open source. I give away the working system. Taking it from 1 to 100 is the work you do in your business.
+HomeCast, drawn as a PC and a TV inside a wireframe house: your PC's films, music and photos on any TV browser on your home Wi-Fi. One exe with NVENC, QSV and AMF encoding, a 9.3 KB TV client, no cloud and no accounts.
+Download HomeCast for Windows
+claude-code-mods, drawn as a Claude Code window with three mods in place: token-ledger, plan limits in a row above the prompt and a ? that asks Haiku what to ask next; next-steps, suggested prompts you tick and insert in order; auto-docs, a follow-up docs commit that keeps the README in step.
+Try the claude-code-mods interactive demo
+nanowall: family photos in, an identity-locked 50-wallpaper Windows desktop carousel out, made with Nano Banana Pro.
+vsm-for-ai-agents: a supervised virtual secondary monitor for Windows. The AI agent works on its own screen in Monitor, Mini or Hide mode, and a human takes over with one click.
+snipe-loop: an agent skill that sweeps Facebook Marketplace and AutoTrader for underpriced listings, sends snipe cards to WhatsApp and retunes its sweep from how the market grades its picks.
+04, count the stock. If it isn't documented, it didn't happen. 1828 contributions in the last 12 months, 52% in private repositories, 2876 commits on default branches, 82 pull requests and 36 new repositories, drawn as one pallet per week and one crate per day.
+05, where it runs. SIG Solutions, an outbound call centre: built by operators, priced like a partner. Then Acorn Brokers, Insurance distribution; LicenceReady, Firearm licence motivation letters, built on local crime data; Civil Society SA, Digital acquisition and advocacy; Stacked Marketing, Performance infrastructure.
+06, contact. Let's talk: revenue systems, dialler integrations, or anything between an ad click and a paid invoice.
+Email franz@sigsolutions.co.za
+Franz Badenhorst on LinkedIn
+@FranzSalesSense on X
